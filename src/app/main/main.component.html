@@ -1,0 +1,55 @@
+<div class="container">
+  <br>
+  <div class="row">
+    <div class="col">
+      <div class="card" style="width: 20rem;">
+        <button class="btn btn-outline-light" style="color: black" [disabled]=disableButtonStudent>
+          <h5 class="card-title text-center">นิสิต</h5>
+          <img src="https://image.flaticon.com/icons/svg/1201/1201175.svg" class="card-img-top" alt="..."
+            id="imageStudent" style="width: 300px">
+        </button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 20rem;">
+        <button class="btn btn-outline-light" style="color: black" [disabled]=disableButtonTeacher>
+          <h5 class="card-title text-center">อาจารย์</h5>
+          <img src="https://image.flaticon.com/icons/svg/167/167752.svg" class="card-img-top" alt="..."
+            id="imageTeacher" style="width: 300px">
+        </button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 20rem;">
+        <button class="btn btn-outline-light" style="color: black" [disabled]=disableButtonExcame>
+          <h5 class="card-title text-center">คนคุมสอบ</h5>
+          <img src="https://image.flaticon.com/icons/svg/189/189061.svg" class="card-img-top" alt="..." id="imageExcame"
+            style="width: 300px">
+        </button>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <div class="card" style="width: 20rem;">
+        <button class="btn btn-outline-light" style="color:black" [disabled]=disableButtonAdmin (click)="onClickAdmin()">
+          <h5 class="card-title text-center">เจ้าหน้าที่</h5>
+          <img src="https://image.flaticon.com/icons/svg/470/470302.svg" class="card-img-top" alt="..." id="imageAdmin"
+            style="width: 300px">
+        </button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 20rem;">
+        <button class="btn btn-outline-light" style="color: black" (click)="OnClickLogout()">
+          <h5 class="card-title text-center">ออกจากระบบ</h5>
+          <img src="https://image.flaticon.com/icons/svg/745/745400.svg" class="card-img-top" alt="..."
+            style="width: 300px">
+        </button>
+      </div>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>

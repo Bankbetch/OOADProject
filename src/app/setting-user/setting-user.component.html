@@ -1,0 +1,274 @@
+<div class="container">
+
+  <!-- <select [(ngModel)]="nameCity" (change)=bfunc()>
+    <option>- กรุณาเลือกจังหวัด -</option>
+    <option *ngFor="let item of cityOption; let i = index">{{item.province_name_eng}}</option>
+  </select>
+
+  <select [(ngModel)]="nameAmpures" (change)=bfunc()>
+    <option>- กรุณาเลือก -</option>
+    <option *ngFor="let item of ArrayAmphures; let i = index">{{item}}</option>
+  </select>
+
+  <select (change)=bfunc() [(ngModel)]="nameZipcode">
+    <option>- กรุณาเลือก -</option>
+    <option *ngFor="let item of ArrayDistricts">{{item}}</option>
+  </select> -->
+
+  <!-- <select (change)=bfunc() >
+      <option>- กรุณาเลือก -</option>
+      <option *ngFor="let item of ArrayZipcode">{{item}}</option>
+    </select> -->
+  <!-- <p>zipcode {{ArrayZipcode}}</p> -->
+
+  <br>
+  <h1 class="text-secondary text-center">จัดการผู้ใช้งาน</h1>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <div class="form-group row">
+          <label for="name" class="col-sm-3 col-form-label">ชื่อ</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="firstName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" (keypress)="isNotNumber($event)" />
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+              <div *ngIf="f.firstName.errors.required">First Name is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="surname" class="col-sm-3 col-form-label">นามสกุล</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="lastName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" (keypress)="isNotNumber($event)" />
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+              <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="username" class="col-sm-3 col-form-label">Username</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="username" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+              <div *ngIf="f.username.errors.required">Username is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="password" class="col-sm-3 col-form-label">Password</label>
+          <div class="col-sm-9">
+            <input type="password" formControlName="password" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Password is required</div>
+              <div *ngIf="f.password.errors.minlength">Password must be at least 8 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="repassword" class="col-sm-3 col-form-label">Confirm Password</label>
+          <div class="col-sm-9">
+            <input type="password" formControlName="confirmPassword" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+              <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+              <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="type" class="col-sm-3 col-form-label">Status</label>
+          <div class="col-sm-9">
+            <div class="input-group mb-0">
+              <select class="custom-select" id="inputGroupSelect01" formControlName="type"
+                [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+                <!-- <option selected [disabled]=disableSelectbox>{{types}}</option> -->
+                <option *ngFor="let item of types2">{{item.name}}</option>
+                <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+                  <div *ngIf="f.type.errors.required">type is required</div>
+                </div>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="repassword" class="col-sm-3 col-form-label">อีเมล์</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="email" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group row">
+          <label for="name" class="col-sm-3 col-form-label">อายุ</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="age" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.age.errors }" maxlength="3" (keypress)=" notText($event)" />
+            <div *ngIf="submitted && f.age.errors" class="invalid-feedback">
+              <div *ngIf="f.age.errors.required">age is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="surname" class="col-sm-3 col-form-label">ที่อยู่</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="address" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+            <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+              <div *ngIf="f.address.errors.required">address is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="province" class="col-sm-3 col-form-label">จังหวัด</label>
+          <div class="col-sm-9">
+            <div class="input-group mb-0">
+              <select class="custom-select" id="inputGroupSelect02" formControlName="province"
+                [ngClass]="{ 'is-invalid': submitted && f.province.errors }" (change)=bfunc()>
+                <option>เลือก</option>
+                <option *ngFor="let item of cityOption; let i = index">{{item.province_name_eng}}</option>
+                <div *ngIf="submitted && f.province.errors" class="invalid-feedback">
+                  <div *ngIf="f.province.errors.required">province is required</div>
+                </div>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="aumpher" class="col-sm-3 col-form-label">อำเภอ</label>
+          <div class="col-sm-9">
+            <div class="input-group mb-0">
+              <select class="custom-select" id="inputGroupSelect03" formControlName="aumpher"
+                [ngClass]="{ 'is-invalid': submitted && f.aumpher.errors }" (change)=bfunc()>
+
+                <option *ngFor="let item of ArrayAmphures; let i = index">{{item}}</option>
+                <div *ngIf="submitted && f.aumpher.errors" class="invalid-feedback">
+                  <div *ngIf="f.aumpher.errors.required">aumpher is required</div>
+                </div>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="tumbon" class="col-sm-3 col-form-label">ตำบล</label>
+          <div class="col-sm-9">
+            <div class="input-group mb-0">
+              <select class="custom-select" id="inputGroupSelect04" formControlName="tumbon"
+                [ngClass]="{ 'is-invalid': submitted && f.tumbon.errors }" (change)=bfunc()>
+
+                <option *ngFor="let item of ArrayDistricts; let i = index">{{item}}</option>
+                <div *ngIf="submitted && f.tumbon.errors" class="invalid-feedback">
+                  <div *ngIf="f.tumbon.errors.required">tumbon is required</div>
+                </div>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="repassword" class="col-sm-3 col-form-label">รหัสไปรษณีย์</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="post" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.post.errors }" disabled />
+            <div *ngIf="submitted && f.post.errors" class="invalid-feedback">
+              <div *ngIf="f.post.errors.required">post Name is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-success text-center" role="alert" *ngIf="allowAlertAdd">
+      เพิ่มข้อมูลเรียบร้อย
+    </div>
+    <div class="alert alert-danger text-center" role="alert" *ngIf="allowAlertDelete">
+      ลบข้อมูลเรียบร้อย
+    </div>
+    <div class="alert alert-primary text-center" role="alert" *ngIf="allowAlertEdit">
+      แก้ไขอมูลเรียบร้อย
+    </div>
+    <div class="row">
+      <div class="col-3 ">
+        <button type="submit" class="btn btn-success btn-lg" [disabled]=disableButtonAdd>
+          <i class="fa fa-plus-square"></i> Add
+        </button>
+      </div>
+      <div class="col-3 offset-0">
+        <button type="button" class="btn btn-warning btn-lg" (click)="onClickEdit()" [disabled]=disableButtonEdit>
+          <i class="fa fa-comment"></i> Edit
+        </button>
+      </div>
+      <div class="col-3 offset-0">
+        <button type="button" class="btn btn-info btn-lg" (click)="OnClear()"><i class="fa fa-times-circle"></i>
+          Cancle</button>
+      </div>
+      <div class="col-3 offset-0">
+        <button class="btn btn-danger btn-lg" (click)="onClickDelete()"><i class="fa fa-trash"></i>
+          Delete</button>
+      </div>
+    </div>
+  </form>
+
+  <br>
+
+  <div class="table-responsive">
+    <table class="table table-hover table-info table-striped text-center table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">เลือก</th>
+          <th scope="col">ที่</th>
+          <th scope="col">ชื่อ</th>
+          <th scope="col">นามสกุล</th>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+          <th scope="col">Status</th>
+          <th scope="col">อายุ</th>
+          <th scope="col">อีเมล์</th>
+          <th scope="col">ที่อยู่</th>
+          <th scope="col">ตำบล</th>
+          <th scope="col">อำเภอ</th>
+          <th scope="col">จังหวัด</th>
+          <th scope="col">รหัสไปรษณีย์</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data let i = index"
+          (click)="tableClick(item.name,item.surname,item.username,item.password,item.types,item.age,item.email,item.address,item.tumbon,item.aumpher,item.city,item.post)">
+          <td>
+              <label><input type="checkbox" value="item.username" (click)="onSetData(item.username)" ></label>
+          </td>
+          <th scope="row">{{i+1}}</th>
+          <td>{{item.name}}</td>
+          <td>{{item.surname}}</td>
+          <td>{{item.username}}</td>
+          <td>{{item.password}}</td>
+          <td>{{item.types}}</td>
+          <td>{{item.age}}</td>
+          <td>{{item.email}}</td>
+          <td>{{item.address}}</td>
+          <td>{{item.tumbon}}</td>
+          <td>{{item.aumpher}}</td>
+          <td>{{item.city}}</td>
+          <td>{{item.post}}</td>
+          <!-- <td>
+            <button class="btn btn-warning"><i class="fa fa-edit"></i> Edit</button>
+          </td> -->
+          <!-- <td> <button class="btn btn-danger" (click)="onClickDelete(item._id)"><i class="fa fa-trash"></i>
+              Delete</button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
