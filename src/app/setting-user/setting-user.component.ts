@@ -53,7 +53,7 @@ export class SettingUserComponent implements OnInit {
   allowAlertEdit = false
   allowAlertDelete = false
 
-  dataDelete: Array<String> = [];
+
 
   constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router, private titleService: Title) {
     this.titleService.setTitle("จัดการผู้ใช้งาน");
@@ -78,9 +78,7 @@ export class SettingUserComponent implements OnInit {
       },
         {
           validator: MustMatch('password', 'confirmPassword')
-        }), this.check(), this.checkLogin(), this.onClickAdmin(), this.OnClear()
-
-
+        }), this.check(), this.checkLogin(), this.onClickAdmin(), this.registerForm.get('type').setValue("นิสิต"), this.registerForm.get('aumpher').setValue("เลือก"), this.registerForm.get('tumbon').setValue("เลือก")
   }
 
 
@@ -133,14 +131,44 @@ export class SettingUserComponent implements OnInit {
     }
 
   }
-  onSetData(_id: String) {
-    this.dataDelete.push(_id)
+  arrayDeleteCheck = ""
+  dataDelete: Array<String> = [];
+
+  onSetData(event) {
+    if (event.target.checked) {
+      this.arrayDeleteCheck = event.target.value
+      this.dataDelete.push(this.arrayDeleteCheck)
+      // console.log(this.arrayDelete)
+      console.log(this.dataDelete)
+    } else {
+      var array = this.dataDelete
+      var index = array.indexOf(event.target.value)
+      if (index !== -1) {
+        array.splice(index, 1)
+        this.dataDelete = array
+      }
+    }
+
   }
   onClickDelete() {
-    console.log(this.dataDelete)
-    this.http.post('http://localhost:4001/deletedata/',this.dataDelete).subscribe((res) => {
-      
-    })
+    var r = confirm("กดokเพื่อลบข้อมูล");
+    if (r == true) {
+      if (this.arrayDeleteCheck !== "" && this.dataDelete.length > 0) {
+        this.allowAlertDelete = true
+        setTimeout(() => {
+          this.allowAlertDelete = false
+        }, 5000);
+        this.http.post('http://localhost:4001/deletedata/', this.dataDelete).subscribe((res) => {
+          this.onGetTable()
+          // this.OnClear()
+          this.OnClear()
+        })
+      }
+      if (this.arrayDeleteCheck == "" || this.dataDelete.length === 0) {
+        alert("กรุณาเลือกข้อมูลที่จะลบ")
+      }
+    }
+
     // var r = confirm("กดokเพื่อลบข้อมูล");
     // if (r == true) {
     //   this.allowAlertDelete = true
@@ -164,7 +192,7 @@ export class SettingUserComponent implements OnInit {
   }
 
 
-
+  disableSelectbox = true
   tableClick(name: string, surname: string, username: string, password: string, status: string, age: string, email: string, address: string, aumpher: string, tumbon: string, city: string, post: string) {
     this.registerForm.get('firstName').setValue(name);
     this.registerForm.get('lastName').setValue(surname);
@@ -180,18 +208,16 @@ export class SettingUserComponent implements OnInit {
     this.registerForm.get('tumbon').setValue(aumpher)
     this.registerForm.get('province').setValue(city)
     this.registerForm.get('post').setValue(post)
+    this.disableSelectbox = false
     this.bfunc()
-    console.log(tumbon)
-    console.log(aumpher)
-
     this.disableButtonEdit = false
     this.disableButtonAdd = true
   }
-  disableSelectbox = false
+
   OnClear() {
+    this.disableSelectbox = true
     this.disableButtonAdd = false
     this.disableButtonEdit = true
-    this.disableSelectbox = true
     this.submitted = false
     this.registerForm.get('firstName').setValue('');
     this.registerForm.get('lastName').setValue("");
@@ -206,7 +232,8 @@ export class SettingUserComponent implements OnInit {
     this.registerForm.get('tumbon').setValue("เลือก")
     this.registerForm.get('province').setValue("เลือก")
     this.registerForm.get('post').setValue("")
-
+    this.onGetTable()
+    this.dataDelete = []
   }
 
 
@@ -253,6 +280,12 @@ export class SettingUserComponent implements OnInit {
       return true;
     return false;
   }
+  isKeypressUsername(event) {
+    var charCode = (event.which) ? event.which : event.keyCode
+    if (charCode > 47 && charCode < 58 || charCode > 64 && charCode < 91 || charCode > 96 && charCode < 123)
+      return true
+    return false
+  }
 
   cityOption = provinces
   amphuresOption = amphures
@@ -298,7 +331,6 @@ export class SettingUserComponent implements OnInit {
       for (let item of this.amphuresOption) {
         if (this.registerForm.value.aumpher == item.amphur_name_eng) {
           this.districtsID = item.amphur_id
-
           for (let item of this.districtsOption) {
             if (this.districtsID == item.amphur_id) {
               this.ArrayDistricts.push(item.district_name_eng)
@@ -311,11 +343,9 @@ export class SettingUserComponent implements OnInit {
     if (this.registerForm.value.tumbon) {
       for (let item of this.districtsOption) {
         if (this.registerForm.value.tumbon == item.district_name_eng && this.districtsID == item.amphur_id) {
-          //
           this.zipCodeID = item.district_code
           for (let item of this.zipcodeOption) {
             if (this.zipCodeID == item.district_code) {
-              // console.log(this.districtsID)
               this.ArrayZipcode.push(item.zipcode_name)
               this.registerForm.get('post').setValue(this.ArrayZipcode)
 
