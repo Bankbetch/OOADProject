@@ -48,6 +48,12 @@ export class MainComponent implements OnInit {
     localStorage.setItem("setLogin", "")
     localStorage.setItem("checknavBarAdmin", "false")
     localStorage.setItem("checkNavbarAdminManageUser", "false")
+
+    localStorage.setItem("checkNavbarAdminManageExcame", "false")
+    localStorage.setItem("checkNavbarAdminManagPersonalExcame", "false")
+    localStorage.setItem("checkNavbarAdminManageExcameNisit", "false")
+    localStorage.setItem("checkNavbarAdminManageRoom", "false")
+
     this.router.navigate(["/"])
   }
 
@@ -85,6 +91,10 @@ export class MainComponent implements OnInit {
 
   checknavBarAdmin = "false"
   checkNavbarAdminManageUser = "false"
+  checkNavbarAdminManageExcame = "false"
+  checkNavbarAdminManagPersonalExcame = "false"
+  checkNavbarAdminManageExcameNisit = "false"
+  checkNavbarAdminManageRoom = "false"
 
   ChckType() {
     if (this.checkG === "นิสิต") {
@@ -122,12 +132,19 @@ export class MainComponent implements OnInit {
       this.disableButtonExcame = true
       this.disableButtonTeacher = true
       this.disableButtonStudent = true
+
       this.checknavBarAdmin = "true"
       this.checkNavbarAdminManageUser = "true"
-
+      this.checkNavbarAdminManageExcame = "true"
+      this.checkNavbarAdminManagPersonalExcame = "true"
+      this.checkNavbarAdminManageExcameNisit = "true"
+      this.checkNavbarAdminManageRoom = "true"
       localStorage.setItem("checknavBarAdmin", this.checknavBarAdmin)
       localStorage.setItem("checkNavbarAdminManageUser", this.checkNavbarAdminManageUser)
-
+      localStorage.setItem("checkNavbarAdminManageExcame", this.checkNavbarAdminManageExcame)
+      localStorage.setItem("checkNavbarAdminManagPersonalExcame", this.checkNavbarAdminManagPersonalExcame)
+      localStorage.setItem("checkNavbarAdminManageExcameNisit", this.checkNavbarAdminManageExcameNisit)
+      localStorage.setItem("checkNavbarAdminManageRoom", this.checkNavbarAdminManageRoom)
     }
   }
   onClickAdmin() {

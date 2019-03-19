@@ -27,9 +27,19 @@
     <a class="navbar-brand text-light" routerLink="/หน้าหลัก" routerLinkActive="active-link">หน้าหลัก</a>
     <a class="navbar-brand text-light" routerLink="/เจ้าหน้าที่" routerLinkActive="active-link"
         *ngIf="checknavBarAdmin">เจ้าหน้าที่</a>
-        
+
     <a class="navbar-brand text-light" routerLink="/เจ้าหน้าที่/จัดการผู้ใช้งาน" routerLinkActive="active-link"
-        *ngIf="checkNavbarAdminManageUser" >จัดการผู้ใช้งาน</a>
+        *ngIf="checkNavbarAdminManageUser">จัดการผู้ใช้งาน</a>
+
+    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManageExcame">จัดการรายวิชาสอน</a>
+
+    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManagPersonalExcame">จัดการคนคุมสอบ</a>
+
+    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManageExcameNisit">จัดการที่นั่งสอบนิสิต</a>
+
+    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManageRoom">จัดการห้องสอบ</a>
+
+
 
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <!-- <li class="nav-item dropdown">
