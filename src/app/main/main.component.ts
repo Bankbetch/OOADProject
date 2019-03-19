@@ -25,6 +25,7 @@ export class MainComponent implements OnInit {
   disableButtonStudent = false
   disableButtonExcame = false
 
+
   check() {
     var check = localStorage.getItem("check")
     var getLogin = localStorage.getItem("setLogin")
@@ -45,6 +46,8 @@ export class MainComponent implements OnInit {
     localStorage.setItem("getSurname", "")
     localStorage.setItem("check", "")
     localStorage.setItem("setLogin", "")
+    localStorage.setItem("checknavBarAdmin", "false")
+    localStorage.setItem("checkNavbarAdminManageUser", "false")
     this.router.navigate(["/"])
   }
 
@@ -79,6 +82,10 @@ export class MainComponent implements OnInit {
       this.router.navigate(["/หน้าหลัก"])
     }
   }
+
+  checknavBarAdmin = "false"
+  checkNavbarAdminManageUser = "false"
+
   ChckType() {
     if (this.checkG === "นิสิต") {
       console.log(this.checkG)
@@ -115,6 +122,12 @@ export class MainComponent implements OnInit {
       this.disableButtonExcame = true
       this.disableButtonTeacher = true
       this.disableButtonStudent = true
+      this.checknavBarAdmin = "true"
+      this.checkNavbarAdminManageUser = "true"
+
+      localStorage.setItem("checknavBarAdmin", this.checknavBarAdmin)
+      localStorage.setItem("checkNavbarAdminManageUser", this.checkNavbarAdminManageUser)
+
     }
   }
   onClickAdmin() {

@@ -10,6 +10,7 @@ export class AppComponent {
   checkG = ""
   name = ""
   surname = ""
+
   ngOnInit(): void {
     this.check()
   }
@@ -29,15 +30,26 @@ export class AppComponent {
       this.router.navigate(["/เจ้าหน้าที่"])
     }
   }
+  checknavBarAdmin = false
+  checkNavbarAdminManageUser = false
   check() {
     var check = localStorage.getItem("check")
     var getLogin = localStorage.getItem("setLogin")
     var getUsername = localStorage.getItem("getName")
     var getSurname = localStorage.getItem("getSurname")
+    var checknavBarAdmin = localStorage.getItem("checknavBarAdmin")
+    var checkNavbarAdminManageUser = localStorage.getItem("checkNavbarAdminManageUser")
     this.checkG = check
     this.getLogin = getLogin
     this.name = getUsername
     this.surname = getSurname
+    if (checknavBarAdmin == "true" && checkNavbarAdminManageUser == "true") {
+      this.checknavBarAdmin = true
+      this.checkNavbarAdminManageUser = true
+    } else {
+      this.checknavBarAdmin = false
+      this.checkNavbarAdminManageUser = false
+    }
     // console.log(this.name)
     window.onload = function () {
     }
@@ -49,6 +61,8 @@ export class AppComponent {
     localStorage.setItem("getSurname", "")
     localStorage.setItem("check", "")
     localStorage.setItem("setLogin", "")
+    localStorage.setItem("checknavBarAdmin", "false")
+    localStorage.setItem("checkNavbarAdminManageUser", "false")
     this.router.navigate(["/"])
   }
 }

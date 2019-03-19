@@ -1,10 +1,66 @@
-<nav id="navbar-example2" class="navbar navbar-light sticky-top" style="background-color: #16a2b7">
-    <a class="navbar-brand">{{name}} {{surname}}</a>
+<!-- <nav class="navbar navbar-light sticky-top" style="background-color: #16a2b7">
+    
+    <a class="navbar-brand text-light">{{name}} {{surname}}</a>
     <ul class="navbar-nav nav-pills">
         <li class="nav-item">
-            <!-- <a class="nav-link" >Singout</a> -->
+            <a class="nav-link" >Singout</a>
             <button type="button" class="btn btn-outline-light" (click)="OnClickLogout()">Singout</button>
         </li>
+
+        <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Dropdown
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li>
     </ul>
+</nav> -->
+
+
+
+<nav class="navbar navbar-expand-xl navbar-light " style="background-color: #16a2b7">
+    <a class="navbar-brand text-light" routerLink="/หน้าหลัก" routerLinkActive="active-link">หน้าหลัก</a>
+    <a class="navbar-brand text-light" routerLink="/เจ้าหน้าที่" routerLinkActive="active-link"
+        *ngIf="checknavBarAdmin">เจ้าหน้าที่</a>
+        
+    <a class="navbar-brand text-light" routerLink="/เจ้าหน้าที่/จัดการผู้ใช้งาน" routerLinkActive="active-link"
+        *ngIf="checkNavbarAdminManageUser" >จัดการผู้ใช้งาน</a>
+
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider">
+
+                </div>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </li> -->
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+        <div class="btn-group">
+            <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="fa fa-user-circle"></i> {{name}} {{surname}}
+            </button>
+            <div class="dropdown-menu">
+                <button class="dropdown-item" type="button" auto (click)="OnClickLogout()"> <i
+                        class="fa fa-sign-out"></i>Singout</button>
+            </div>
+        </div>
+    </form>
 </nav>
+
+
+
 <router-outlet></router-outlet>

@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   usernameG = ""
   check = ""
   setLogin = "false"
+
+
   constructor(private router: Router, private title: Title) {
     this.title.setTitle("Login")
   }
