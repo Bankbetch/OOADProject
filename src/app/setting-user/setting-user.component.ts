@@ -18,6 +18,7 @@ declare var $: any;
 export class SettingUserComponent implements OnInit {
   disableButtonEdit = true
   disableButtonAdd = false
+  
   dbAddress = {}
   name = ""
   surname = ""
@@ -204,6 +205,8 @@ export class SettingUserComponent implements OnInit {
     this.bfunc()
     this.disableButtonEdit = false
     this.disableButtonAdd = true
+    this.registerForm.controls['username'].disable()
+    
   }
 
   OnClear() {
@@ -226,6 +229,7 @@ export class SettingUserComponent implements OnInit {
     this.registerForm.get('post').setValue("")
     this.onGetTable()
     this.dataDelete = []
+    this.registerForm.controls['username'].enable()
   }
 
 
