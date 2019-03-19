@@ -16,6 +16,8 @@ export class AppComponent {
   checkNavbarAdminManagPersonalExcame = false
   checkNavbarAdminManageExcameNisit = false
   checkNavbarAdminManageRoom = false
+  getStatusNoPageLogin = "false"
+  navbarLogin = true
   ngOnInit(): void {
     this.check()
   }
@@ -32,6 +34,7 @@ export class AppComponent {
       this.router.navigate(["/หน้าหลัก"])
     }
     else {
+      this.navbarLogin = false
       this.router.navigate(["/เจ้าหน้าที่"])
     }
   }
@@ -46,10 +49,12 @@ export class AppComponent {
     var checkNavbarAdminManagPersonalExcame = localStorage.getItem("checkNavbarAdminManagPersonalExcame")
     var checkNavbarAdminManageExcameNisit = localStorage.getItem("checkNavbarAdminManageExcameNisit")
     var checkNavbarAdminManageRoom = localStorage.getItem("checkNavbarAdminManageRoom")
+    var getStatusNoPageLogin = localStorage.getItem("setStatusNoPageLogin")
     this.checkG = check
     this.getLogin = getLogin
     this.name = getUsername
     this.surname = getSurname
+    this.getStatusNoPageLogin = getStatusNoPageLogin
     if (checknavBarAdmin == "true" && checkNavbarAdminManageUser == "true" && checkNavbarAdminManageExcame == "true" && checkNavbarAdminManagPersonalExcame == "true" && checkNavbarAdminManageExcameNisit == "true" && checkNavbarAdminManageRoom == "true") {
       this.checknavBarAdmin = true
       this.checkNavbarAdminManageUser = true
@@ -57,13 +62,18 @@ export class AppComponent {
       this.checkNavbarAdminManagPersonalExcame = true
       this.checkNavbarAdminManageExcameNisit = true
       this.checkNavbarAdminManageRoom = true
-    } else {
+      this.navbarLogin = true
+    } if (this.name != "") {
+      this.navbarLogin = true
+    }
+    else {
       this.checknavBarAdmin = false
       this.checkNavbarAdminManageUser = false
       this.checkNavbarAdminManageExcame = false
       this.checkNavbarAdminManagPersonalExcame = false
       this.checkNavbarAdminManageExcameNisit = false
       this.checkNavbarAdminManageRoom = false
+      this.navbarLogin = false
     }
     window.onload = function () {
     }
@@ -82,6 +92,9 @@ export class AppComponent {
     localStorage.setItem("checkNavbarAdminManageExcame", "false")
     localStorage.setItem("checkNavbarAdminManagPersonalExcame", "false")
     localStorage.setItem("checkNavbarAdminManageRoom", "false")
+    localStorage.setItem("setStatusNoPageLogin", "false")
     this.router.navigate(["/"])
+    this.navbarLogin = true
+
   }
 }

@@ -16,13 +16,14 @@ export class LoginComponent implements OnInit {
   check = ""
   setLogin = "false"
 
+  setStatusNoPageLogin = "false"
 
   constructor(private router: Router, private title: Title) {
     this.title.setTitle("Login")
   }
 
-  ngOnInit() {
-    this.check = ""
+  ngOnInit(): void {
+    this.check = "", this.checkNopageLogin()
   }
 
   onSignin() {
@@ -56,8 +57,17 @@ export class LoginComponent implements OnInit {
     localStorage.setItem("getSurname", this.getSurnameG)
     this.router.navigate(["/หน้าหลัก"])
   }
-  OnSetLogin() {
 
+  checkNopageLogin() {
+    var getStatus = localStorage.getItem("setStatusNoPageLogin")
+    this.setStatusNoPageLogin = getStatus
+    console.log(this.setStatusNoPageLogin)
+    window.onload = function () {
+    }
+    if (this.setStatusNoPageLogin == "true") {
+      this.router.navigate(["/หน้าหลัก"])
+    } else {
+      this.router.navigate(["/"])
+    }
   }
-
 }

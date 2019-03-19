@@ -24,7 +24,7 @@ export class MainComponent implements OnInit {
   disableButtonTeacher = false
   disableButtonStudent = false
   disableButtonExcame = false
-
+  setStatusNoPageLogin = "false"
 
   check() {
     var check = localStorage.getItem("check")
@@ -48,20 +48,23 @@ export class MainComponent implements OnInit {
     localStorage.setItem("setLogin", "")
     localStorage.setItem("checknavBarAdmin", "false")
     localStorage.setItem("checkNavbarAdminManageUser", "false")
-
     localStorage.setItem("checkNavbarAdminManageExcame", "false")
     localStorage.setItem("checkNavbarAdminManagPersonalExcame", "false")
     localStorage.setItem("checkNavbarAdminManageExcameNisit", "false")
     localStorage.setItem("checkNavbarAdminManageRoom", "false")
-
+    localStorage.setItem("setStatusNoPageLogin", "false")
     this.router.navigate(["/"])
   }
 
   checkLogin() {
     if (this.getLogin !== "true") {
       this.router.navigate(["/"])
-    } else {
+    }
+    else {
       this.router.navigate(["/หน้าหลัก"])
+      this.setStatusNoPageLogin = "true"
+      console.log(this.setStatusNoPageLogin)
+      localStorage.setItem("setStatusNoPageLogin", this.setStatusNoPageLogin)
     }
   }
 
