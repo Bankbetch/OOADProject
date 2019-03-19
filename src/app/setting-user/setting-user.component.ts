@@ -52,9 +52,24 @@ export class SettingUserComponent implements OnInit {
   allowAlertAdd = false
   allowAlertEdit = false
   allowAlertDelete = false
-
-
-
+  cityOption = provinces
+  amphuresOption = amphures
+  districtsOption = districts
+  zipcodeOption = zipcode
+  ArrayAmphures = new Array()
+  ArrayDistricts = new Array()
+  ArrayZipcode = new Array()
+  nameCity = ""
+  IDCity = ""
+  nameAmpures = ""
+  districtsID = ""
+  nameZipcode = ""
+  zipCodeID = ""
+  arrayDeleteCheck = ""
+  dataDelete: Array<String> = [];
+  disableSelectbox = true
+  checkG = ""
+  getLogin = ""
   constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router, private titleService: Title) {
     this.titleService.setTitle("จัดการผู้ใช้งาน");
   }
@@ -87,7 +102,6 @@ export class SettingUserComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
@@ -101,15 +115,12 @@ export class SettingUserComponent implements OnInit {
       this.http.post<any>('http://localhost:4001/settinguser', obj).subscribe((res) => {
         this.onGetTable()
         this.OnClear()
-        // 
       })
     }
-    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value))
   }
 
   onClickEdit() {
     this.submitted = true;
-    // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
@@ -123,7 +134,6 @@ export class SettingUserComponent implements OnInit {
       console.log(this.registerForm.value.type)
       this.http.patch<any>('http://localhost:4001/getdata/', obj).subscribe((res) => {
         console.log("test2")
-        //
         this.disableButtonAdd = false
         this.onGetTable()
         this.OnClear()
@@ -131,14 +141,11 @@ export class SettingUserComponent implements OnInit {
     }
 
   }
-  arrayDeleteCheck = ""
-  dataDelete: Array<String> = [];
 
   onSetData(event) {
     if (event.target.checked) {
       this.arrayDeleteCheck = event.target.value
       this.dataDelete.push(this.arrayDeleteCheck)
-      // console.log(this.arrayDelete)
       console.log(this.dataDelete)
     } else {
       var array = this.dataDelete
@@ -160,7 +167,6 @@ export class SettingUserComponent implements OnInit {
         }, 5000);
         this.http.post('http://localhost:4001/deletedata/', this.dataDelete).subscribe((res) => {
           this.onGetTable()
-          // this.OnClear()
           this.OnClear()
         })
       }
@@ -168,20 +174,6 @@ export class SettingUserComponent implements OnInit {
         alert("กรุณาเลือกข้อมูลที่จะลบ")
       }
     }
-
-    // var r = confirm("กดokเพื่อลบข้อมูล");
-    // if (r == true) {
-    //   this.allowAlertDelete = true
-    //   setTimeout(() => {
-    //     this.allowAlertDelete = false
-    //   }, 5000);
-    //   this.http.delete('http://localhost:4001/getdata/' + _id).subscribe((res) => {
-    //     console.log(_id)
-    //     this.onGetTable()
-    //     // this.OnClear()
-    //     this.OnClear()
-    //   })
-    // }
 
   }
 
@@ -192,7 +184,7 @@ export class SettingUserComponent implements OnInit {
   }
 
 
-  disableSelectbox = true
+
   tableClick(name: string, surname: string, username: string, password: string, status: string, age: string, email: string, address: string, aumpher: string, tumbon: string, city: string, post: string) {
     this.registerForm.get('firstName').setValue(name);
     this.registerForm.get('lastName').setValue(surname);
@@ -245,9 +237,6 @@ export class SettingUserComponent implements OnInit {
     return true;
   }
 
-  checkG = ""
-  getLogin = ""
-
   check() {
     var check = localStorage.getItem("check")
     var getLogin = localStorage.getItem("setLogin")
@@ -255,7 +244,6 @@ export class SettingUserComponent implements OnInit {
     this.getLogin = getLogin
     window.onload = function () {
     }
-    // console.log(this.checkG)
   }
 
   onClickAdmin() {
@@ -287,24 +275,6 @@ export class SettingUserComponent implements OnInit {
     return false
   }
 
-  cityOption = provinces
-  amphuresOption = amphures
-  districtsOption = districts
-  zipcodeOption = zipcode
-
-  ArrayAmphures = new Array()
-  ArrayDistricts = new Array()
-  ArrayZipcode = new Array()
-
-  nameCity = ""
-
-  IDCity = ""
-  nameAmpures = ""
-
-  districtsID = ""
-  nameZipcode = ""
-  zipCodeID = ""
-  count = 0
   bfunc() {
     if (this.registerForm.value.province) {
       for (let item of this.cityOption) {

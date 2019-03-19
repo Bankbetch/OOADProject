@@ -1,28 +1,3 @@
-<!-- <nav class="navbar navbar-light sticky-top" style="background-color: #16a2b7">
-    
-    <a class="navbar-brand text-light">{{name}} {{surname}}</a>
-    <ul class="navbar-nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" >Singout</a>
-            <button type="button" class="btn btn-outline-light" (click)="OnClickLogout()">Singout</button>
-        </li>
-
-        <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
-    </ul>
-</nav> -->
-
-
-
 <nav class="navbar navbar-expand-xl navbar-light " style="background-color: #16a2b7">
     <a class="navbar-brand text-light" routerLink="/หน้าหลัก" routerLinkActive="active-link">หน้าหลัก</a>
     <a class="navbar-brand text-light" routerLink="/เจ้าหน้าที่" routerLinkActive="active-link"
@@ -39,23 +14,7 @@
 
     <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManageRoom">จัดการห้องสอบ</a>
 
-
-
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider">
-
-                </div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-        </li> -->
     </ul>
     <form class="form-inline my-2 my-lg-0">
         <div class="btn-group">
@@ -70,7 +29,5 @@
         </div>
     </form>
 </nav>
-
-
 
 <router-outlet></router-outlet>

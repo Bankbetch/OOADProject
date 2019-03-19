@@ -1,26 +1,5 @@
 <div class="container">
 
-  <!-- <select [(ngModel)]="nameCity" (change)=bfunc()>
-    <option>- กรุณาเลือกจังหวัด -</option>
-    <option *ngFor="let item of cityOption; let i = index">{{item.province_name_eng}}</option>
-  </select>
-
-  <select [(ngModel)]="nameAmpures" (change)=bfunc()>
-    <option>- กรุณาเลือก -</option>
-    <option *ngFor="let item of ArrayAmphures; let i = index">{{item}}</option>
-  </select>
-
-  <select (change)=bfunc() [(ngModel)]="nameZipcode">
-    <option>- กรุณาเลือก -</option>
-    <option *ngFor="let item of ArrayDistricts">{{item}}</option>
-  </select> -->
-
-  <!-- <select (change)=bfunc() >
-      <option>- กรุณาเลือก -</option>
-      <option *ngFor="let item of ArrayZipcode">{{item}}</option>
-    </select> -->
-  <!-- <p>zipcode {{ArrayZipcode}}</p> -->
-
   <br>
   <h1 class="text-secondary text-center">จัดการผู้ใช้งาน</h1>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -84,7 +63,6 @@
             <div class="input-group mb-0">
               <select class="custom-select" id="inputGroupSelect01" formControlName="type"
                 [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
-                <!-- <option selected [disabled]=disableSelectbox>{{types}}</option> -->
                 <option *ngFor="let item of types2">{{item.name}}</option>
                 <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
                   <div *ngIf="f.type.errors.required">type is required</div>
@@ -266,12 +244,6 @@
           <td>{{item.aumpher}}</td>
           <td>{{item.city}}</td>
           <td>{{item.post}}</td>
-          <!-- <td>
-            <button class="btn btn-warning"><i class="fa fa-edit"></i> Edit</button>
-          </td> -->
-          <!-- <td> <button class="btn btn-danger" (click)="onClickDelete(item._id)"><i class="fa fa-trash"></i>
-              Delete</button>
-          </td> -->
         </tr>
       </tbody>
     </table>

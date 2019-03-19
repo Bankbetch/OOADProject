@@ -57,30 +57,6 @@ export class MainComponent implements OnInit {
     this.router.navigate(["/"])
   }
 
-  // onClickStudent() {
-  //   if (this.checkG === "นิสิต") {
-  //     console.log("Not Permission")
-  //     this.router.navigate(["/หน้าหลัก"])
-  //   }
-  // }
-  // onClickTeacher() {
-  //   if (this.checkG === "อาจารย์") {
-  //     console.log("Not Permission")
-  //     this.router.navigate(["/หน้าหลัก"])
-  //   }
-  // }
-  // onClickExcam() {
-  //   if (this.checkG === "คนคุมสอบ") {
-  //     console.log("Not Permission")
-  //     this.router.navigate(["/หน้าหลัก"])
-  //   }
-  // }
-  // onClickAdmin() {
-  //   if (this.checkG === "เจ้าหน้าที่") {
-  //     this.router.navigate(["/เจ้าหน้าที่/จัดการผู้ใช้งาน"])
-  //   }
-  // }
-
   checkLogin() {
     if (this.getLogin !== "true") {
       this.router.navigate(["/"])
