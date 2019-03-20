@@ -35,9 +35,6 @@ export class MainComponent implements OnInit {
     this.getLogin = getLogin
     this.name = getUsername
     this.surname = getSurname
-    window.onload = function () {
-
-    }
 
   }
   OnClickLogout() {

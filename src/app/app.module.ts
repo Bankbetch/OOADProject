@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
@@ -9,6 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SettingUserComponent } from './setting-user/setting-user.component';
 import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FilterPipe } from '../app/setting-user/FilterPipe.component';
 const router: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -25,6 +26,7 @@ const router: Routes = [
     AdminComponent,
     SettingUserComponent,
     LoginComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -35,6 +37,6 @@ const router: Routes = [
     ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

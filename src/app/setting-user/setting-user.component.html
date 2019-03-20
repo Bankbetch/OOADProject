@@ -2,7 +2,7 @@
 
   <br>
   <h1 class="text-secondary text-center">จัดการผู้ใช้งาน</h1>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" *ngIf="checkForm">
     <div class="row">
       <div class="col">
         <div class="form-group row">
@@ -28,8 +28,8 @@
         <div class="form-group row">
           <label for="username" class="col-sm-3 col-form-label">Username</label>
           <div class="col-sm-9">
-            <input type="text" formControlName="username" class="form-control" (keypress)="isKeypressUsername($event)" maxlength="20"
-              [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+            <input type="text" formControlName="username" class="form-control" (keypress)="isKeypressUsername($event)"
+              maxlength="20" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
             <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
               <div *ngIf="f.username.errors.required">Username is required</div>
             </div>
@@ -112,7 +112,7 @@
             <div class="input-group mb-0">
               <select class="custom-select" id="inputGroupSelect02" formControlName="province"
                 [ngClass]="{ 'is-invalid': submitted && f.province.errors }" (change)=bfunc()>
-                <option >เลือก</option>
+                <option>เลือก</option>
                 <option *ngFor="let item of cityOption; let i = index">{{item.province_name_eng}}</option>
                 <div *ngIf="submitted && f.province.errors" class="invalid-feedback">
                   <div *ngIf="f.province.errors.required">province is required</div>
@@ -128,8 +128,8 @@
             <div class="input-group mb-0">
               <select class="custom-select" id="inputGroupSelect03" formControlName="aumpher"
                 [ngClass]="{ 'is-invalid': submitted && f.aumpher.errors }" (change)=bfunc()>
-                
-                <option *ngIf="disableSelectbox" >เลือก</option>
+
+                <option *ngIf="disableSelectbox">เลือก</option>
 
                 <option *ngFor="let item of ArrayAmphures; let i = index">{{item}}</option>
                 <div *ngIf="submitted && f.aumpher.errors" class="invalid-feedback">
@@ -147,7 +147,7 @@
               <select class="custom-select" id="inputGroupSelect04" formControlName="tumbon"
                 [ngClass]="{ 'is-invalid': submitted && f.tumbon.errors }" (change)=bfunc()>
 
-                <option *ngIf="disableSelectbox" >เลือก</option>
+                <option *ngIf="disableSelectbox">เลือก</option>
 
                 <option *ngFor="let item of ArrayDistricts; let i = index">{{item}}</option>
                 <div *ngIf="submitted && f.tumbon.errors" class="invalid-feedback">
@@ -180,31 +180,40 @@
       แก้ไขอมูลเรียบร้อย
     </div>
     <div class="row">
-      <div class="col-3 ">
-        <button type="submit" class="btn btn-success btn-lg" [disabled]=disableButtonAdd>
+      <div class="col-3 offset-4 " *ngIf="disableButtonAdd">
+        <button type="submit" class="btn btn-success btn-lg">
           <i class="fa fa-plus-square"></i> Add
         </button>
       </div>
-      <div class="col-3 offset-0">
-        <button type="button" class="btn btn-warning btn-lg" (click)="onClickEdit()" [disabled]=disableButtonEdit>
+      <div class="col-2 offset-3" *ngIf="disableButtonEdit">
+        <button type="button" class="btn btn-warning btn-lg" (click)="onClickEdit()">
           <i class="fa fa-comment"></i> Edit
         </button>
+      </div>
+      <div class="col-2" *ngIf="disableButtonDelete">
+        <button type="button" class="btn btn-danger btn-lg" (click)="onClickDelete()"><i class="fa fa-trash"></i>
+          Delete</button>
       </div>
       <div class="col-3 offset-0">
         <button type="button" class="btn btn-info btn-lg" (click)="OnClear()"><i class="fa fa-times-circle"></i>
           Cancle</button>
       </div>
-      <div class="col-3 offset-0">
-        <button type="button" class="btn btn-danger btn-lg" (click)="onClickDelete()"><i class="fa fa-trash"></i>
-          Delete</button>
-      </div>
     </div>
   </form>
-
   <br>
 
-  <div class="table-responsive">
-    <table class="table table-hover table-info table-striped text-center table-bordered">
+  <div class="row">
+    <div class="col-1">
+      <button class="btn btn-outline-success" (click)="showButtonAdd()" *ngIf="disableButtonCreate">Create</button>
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" name="searchString" placeholder="Type to search..."
+        [(ngModel)]="searchString" *ngIf="disableTable">
+    </div>
+  </div>
+  <br>
+  <div class="table-responsive" *ngIf="disableTable">
+    <table class="table table-hover table-info table-striped text-center table-bordered" id="just_a_table">
       <thead>
         <tr>
           <th scope="col">เลือก</th>
@@ -225,11 +234,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of data let i = index"
-          (click)="tableClick(item.name,item.surname,item.username,item.password,item.types,item.age,item.email,item.address,item.tumbon,item.aumpher,item.city,item.post)">
+        <tr
+          *ngFor="let item of data | filterPipe :{name:searchString,surname:searchString,username:searchString,types:searchString,age:searchString,email:searchString}; let i = index"
+          (click)="tableClick(item.name,item.surname,item.username,item.password,item.types,item.age,item.email,item.address,item.tumbon,item.aumpher,item.city,item.post,i+1,$event)">
           <td>
-            <label><input type="checkbox" value="{{item.username}}" (change)="onSetData($event)"
-                [checked]="checkCheckbox"></label>
+            <label><input type="checkbox" value="{{item.username}}" (change)="onSetData($event,item.username)"></label>
           </td>
           <th scope="row">{{i+1}}</th>
           <td>{{item.name}}</td>

@@ -9,16 +9,26 @@ import provinces from '../../../json/provinces.json'
 import amphures from '../../../json/amphures.json'
 import districts from '../../../json/districts.json'
 import zipcode from '../../../json/zipcodes.json'
+import { FilterPipe } from './FilterPipe.component';
 declare var $: any;
+
+
 @Component({
   selector: 'app-setting-user',
   templateUrl: './setting-user.component.html',
-  styleUrls: ['./setting-user.component.css']
+  styleUrls: ['./setting-user.component.css'],
+
 })
 export class SettingUserComponent implements OnInit {
-  disableButtonEdit = true
+
+  searchToken: string;
+  public searchString: string;
+
+  test = "surname"
+  checkForm = false
+  disableButtonEdit = false
   disableButtonAdd = false
-  
+
   dbAddress = {}
   name = ""
   surname = ""
@@ -143,11 +153,18 @@ export class SettingUserComponent implements OnInit {
 
   }
 
-  onSetData(event) {
+
+
+
+  onSetData(event, username: string) {
     if (event.target.checked) {
       this.arrayDeleteCheck = event.target.value
       this.dataDelete.push(this.arrayDeleteCheck)
-      console.log(this.dataDelete)
+      console.log(event.target.value)
+      console.log(username)
+      if (event.target.value === username) {
+        this.disableButtonDelete = true
+      }
     } else {
       var array = this.dataDelete
       var index = array.indexOf(event.target.value)
@@ -184,16 +201,14 @@ export class SettingUserComponent implements OnInit {
     })
   }
 
-
-
-  tableClick(name: string, surname: string, username: string, password: string, status: string, age: string, email: string, address: string, aumpher: string, tumbon: string, city: string, post: string) {
+  tableClick(name: string, surname: string, username: string, password: string, status: string, age: string, email: string, address: string, aumpher: string, tumbon: string, city: string, post: string, i: number, event) {
     this.registerForm.get('firstName').setValue(name);
     this.registerForm.get('lastName').setValue(surname);
     this.registerForm.get('username').setValue(username);
     this.registerForm.get('password').setValue(password)
     this.registerForm.get('confirmPassword').setValue(password)
     this.registerForm.get('type').setValue(status)
-    console.log(this.registerForm.value.type)
+    // console.log(this.registerForm.value.type)
     this.registerForm.get('email').setValue(email)
     this.registerForm.get('age').setValue(age)
     this.registerForm.get('address').setValue(address)
@@ -203,16 +218,17 @@ export class SettingUserComponent implements OnInit {
     this.registerForm.get('post').setValue(post)
     this.disableSelectbox = false
     this.bfunc()
-    this.disableButtonEdit = false
-    this.disableButtonAdd = true
     this.registerForm.controls['username'].disable()
-    
+    this.checkForm = true
+    this.disableButtonEdit = true
+    this.disableButtonCreate = true
+    this.disableButtonDelete = false
   }
 
   OnClear() {
-    this.disableSelectbox = true
+    this.disableSelectbox = false
     this.disableButtonAdd = false
-    this.disableButtonEdit = true
+    this.disableButtonEdit = false
     this.submitted = false
     this.registerForm.get('firstName').setValue('');
     this.registerForm.get('lastName').setValue("");
@@ -230,6 +246,10 @@ export class SettingUserComponent implements OnInit {
     this.onGetTable()
     this.dataDelete = []
     this.registerForm.controls['username'].enable()
+    this.checkForm = false
+    this.disableButtonCreate = true
+    this.disableTable = true
+    this.disableButtonDelete = false
   }
 
 
@@ -327,6 +347,20 @@ export class SettingUserComponent implements OnInit {
           }
         }
       }
+    }
+  }
+  disableButtonCreate = true
+  disableButtonDelete = true
+  disableTable = true
+  showButtonAdd() {
+    this.checkForm = true
+    if (this.checkForm = true) {
+      this.disableButtonAdd = true
+      this.disableButtonEdit = false
+      this.disableButtonDelete = false
+      this.disableTable = false
+      this.disableButtonCreate = false
+      console.log(this.disableButtonCreate)
     }
   }
 }
