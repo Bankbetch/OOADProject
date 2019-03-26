@@ -10,6 +10,7 @@ import { Title } from "@angular/platform-browser";
   styleUrls: ['./manage-build.component.css']
 })
 export class ManageBuildComponent implements OnInit {
+  searchString = ""
   checkG
   getLogin
   manageBuild: FormGroup
@@ -20,9 +21,9 @@ export class ManageBuildComponent implements OnInit {
   ngOnInit() {
     this.check(), this.onClickAdmin(),
       this.manageBuild = this.formBuilder.group({
-        nameTeacher: ['', Validators.required],
-        nameSubject: ['', Validators.required],
-        term: ['', Validators.required],
+        build: ['', Validators.required],
+        room: ['', Validators.required],
+        sit: ['', Validators.required],
       })
   }
   check() {

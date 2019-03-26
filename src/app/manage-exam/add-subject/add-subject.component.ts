@@ -9,7 +9,7 @@ import { Title } from "@angular/platform-browser";
   styleUrls: ['./add-subject.component.css']
 })
 export class AddSubjectComponent implements OnInit {
-  
+  searchString = ""
   checkG = "false"
   getLogin = "false"
   addIncres: FormGroup;
@@ -21,9 +21,9 @@ export class AddSubjectComponent implements OnInit {
   ngOnInit() {
     this.check(), this.onClickAdmin(),
       this.addIncres = this.formBuilder.group({
-        nameTeacher: ['', Validators.required],
+        id: ['', Validators.required],
         nameSubject: ['', Validators.required],
-        term: ['', Validators.required],
+        nameTeacher: ['', Validators.required],
         build: ['', Validators.required],
         room: ['', Validators.required],
         day: ['', Validators.required],
