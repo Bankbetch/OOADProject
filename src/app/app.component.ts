@@ -16,6 +16,7 @@ export class AppComponent {
   checkNavbarAdminManagPersonalExcame = false
   checkNavbarAdminManageExcameNisit = false
   checkNavbarAdminManageRoom = false
+  checkNavbarAdminBuild = false
   getStatusNoPageLogin = "false"
   navbarLogin = true
   ngOnInit(): void {
@@ -50,18 +51,20 @@ export class AppComponent {
     var checkNavbarAdminManageExcameNisit = localStorage.getItem("checkNavbarAdminManageExcameNisit")
     var checkNavbarAdminManageRoom = localStorage.getItem("checkNavbarAdminManageRoom")
     var getStatusNoPageLogin = localStorage.getItem("setStatusNoPageLogin")
+    var checkNavbarAdminBuild = localStorage.getItem("checkNavbarAdminBuild")
     this.checkG = check
     this.getLogin = getLogin
     this.name = getUsername
     this.surname = getSurname
     this.getStatusNoPageLogin = getStatusNoPageLogin
-    if (checknavBarAdmin == "true" && checkNavbarAdminManageUser == "true" && checkNavbarAdminManageExcame == "true" && checkNavbarAdminManagPersonalExcame == "true" && checkNavbarAdminManageExcameNisit == "true" && checkNavbarAdminManageRoom == "true") {
+    if (checkNavbarAdminBuild == "true" && checknavBarAdmin == "true" && checkNavbarAdminManageUser == "true" && checkNavbarAdminManageExcame == "true" && checkNavbarAdminManagPersonalExcame == "true" && checkNavbarAdminManageExcameNisit == "true" && checkNavbarAdminManageRoom == "true") {
       this.checknavBarAdmin = true
       this.checkNavbarAdminManageUser = true
       this.checkNavbarAdminManageExcame = true
       this.checkNavbarAdminManagPersonalExcame = true
       this.checkNavbarAdminManageExcameNisit = true
       this.checkNavbarAdminManageRoom = true
+      this.checkNavbarAdminBuild = true
       this.navbarLogin = true
     } if (this.name != "") {
       this.navbarLogin = true
@@ -73,6 +76,7 @@ export class AppComponent {
       this.checkNavbarAdminManagPersonalExcame = false
       this.checkNavbarAdminManageExcameNisit = false
       this.checkNavbarAdminManageRoom = false
+      this.checkNavbarAdminBuild = false
       this.navbarLogin = false
     }
     window.onload = function () {
@@ -93,6 +97,7 @@ export class AppComponent {
     localStorage.setItem("checkNavbarAdminManagPersonalExcame", "false")
     localStorage.setItem("checkNavbarAdminManageRoom", "false")
     localStorage.setItem("setStatusNoPageLogin", "false")
+    localStorage.setItem("checkNavbarAdminBuild", "false")
     this.router.navigate(["/"])
     this.navbarLogin = true
 

@@ -1,21 +1,56 @@
 <nav class="navbar navbar-expand-xl navbar-light sticky-top " style="background-color: #16a2b7" *ngIf="navbarLogin">
-    <a class="navbar-brand text-light" routerLink="/หน้าหลัก" routerLinkActive="active-link">หน้าหลัก</a>
-    <a class="navbar-brand text-light" routerLink="/เจ้าหน้าที่" routerLinkActive="active-link"
-        *ngIf="checknavBarAdmin">เจ้าหน้าที่</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <a class="navbar-brand text-light" routerLink="/เจ้าหน้าที่/จัดการผู้ใช้งาน" routerLinkActive="active-link"
-        *ngIf="checkNavbarAdminManageUser">จัดการผู้ใช้งาน</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link text-light" routerLink="/หน้าหลัก" routerLinkActive="active-link">หน้าหลัก</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-light" routerLink="/เจ้าหน้าที่" routerLinkActive="active-link"
+                    *ngIf="checknavBarAdmin">เจ้าหน้าที่</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-light" routerLink="/เจ้าหน้าที่/จัดการผู้ใช้งาน" routerLinkActive="active-link"
+                    *ngIf="checkNavbarAdminManageUser">จัดการผู้ใช้งาน</a>
+            </li>
+            <li class="nav-item dropdown ">
 
-    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManageExcame">จัดการรายวิชาสอน</a>
+                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    *ngIf="checkNavbarAdminManageExcame">
+                    จัดการรายวิชาสอน
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#" routerLink="/เจ้าหน้าที่/จัดการรายวิชาสอน"
+                        routerLinkActive="active-link">ดูตารางวิชา</a>
+                    <a class="dropdown-item" href="#">ดูรายวิชาสอน</a>
+                    <a class="dropdown-item" href="#" routerLink="เจ้าหน้าที่/จัดการรายวิชาสอน/เพิ่มรายวิชาสอน"
+                        routerLinkActive="active-link">เพิ่มรายวิชาสอน</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" *ngIf="checkNavbarAdminManageRoom" routerLink="เจ้าหน้าที่/จัดการตึก"
+                        routerLinkActive="active-link">จัดการตึก</a>
+                </div>
 
-    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManagPersonalExcame">จัดการคนคุมสอบ</a>
-
-    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManageExcameNisit">จัดการที่นั่งสอบนิสิต</a>
-
-    <a class="navbar-brand text-light" *ngIf="checkNavbarAdminManageRoom">จัดการห้องสอบ</a>
-
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-    </ul>
+                <!-- <a class="nav-link text-light" *ngIf="checkNavbarAdminManageExcame"
+                    routerLink="/เจ้าหน้าที่/จัดการรายวิชาสอน" routerLinkActive="active-link">จัดการรายวิชาสอน</a> -->
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-light" *ngIf="checkNavbarAdminManagPersonalExcame">จัดการคนคุมสอบ</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-light" *ngIf="checkNavbarAdminManageExcameNisit">จัดการที่นั่งสอบนิสิต</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link text-light" *ngIf="checkNavbarAdminManageRoom">จัดการห้องสอบ</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        </ul>
+    </div>
     <form class="form-inline my-2 my-lg-0">
         <div class="btn-group">
             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"

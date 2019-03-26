@@ -1,0 +1,164 @@
+<div class="container w3-animate-opacity">
+  <br>
+  <div class="row">
+    <div class="col-sm-">
+      <button class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal" data-dismiss="modal"
+        (click)="OnclickModel()"><i class="fa fa-plus-square"></i>Create</button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">เพิ่มข้อมูล</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <form [formGroup]="AddSubjectForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label>รหัสวิชา</label>
+                <input type="text" class="form-control" placeholder="Ex.88622459 " formControlName="id"
+                  [ngClass]="{ 'is-invalid': submitted && f.id.errors }" />
+                <div *ngIf="submitted && f.id.errors" class="invalid-feedback">
+                  <div *ngIf="f.id.errors.required">First Name is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>ชื่อวิชา </label>
+                <input type="text" class="form-control" placeholder="Ex.Software Testing" formControlName="nameSubject"
+                  [ngClass]="{ 'is-invalid': submitted && f.nameSubject.errors }" />
+                <div *ngIf="submitted && f.nameSubject.errors" class="invalid-feedback">
+                  <div *ngIf="f.nameSubject.errors.required">First Name is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>คณะ </label>
+                <input type="text" class="form-control" placeholder="Ex.คณะวิทยาการสารสนเทศ" formControlName="faculty"
+                  [ngClass]="{ 'is-invalid': submitted && f.faculty.errors }" />
+                <div *ngIf="submitted && f.faculty.errors" class="invalid-feedback">
+                  <div *ngIf="f.faculty.errors.required">First Name is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>หน่วยกิต </label>
+                <input type="text" class="form-control" placeholder="Ex.3" formControlName="unit"
+                  [ngClass]="{ 'is-invalid': submitted && f.unit.errors }" />
+                <div *ngIf="submitted && f.unit.errors" class="invalid-feedback">
+                  <div *ngIf="f.unit.errors.required">First Name is required</div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" (click)="onSubmit()">Save change</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+
+    <div class="col-sm-">
+      <button class="btn btn-outline-danger" (click)="onClickDelete()"><i class="fa fa-remove"></i>Delete</button>
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" name="searchString" placeholder="Type to search..."
+        [(ngModel)]="searchString">
+    </div>
+  </div>
+  <br>
+  <div class="table-responsive">
+    <table class="table table-hover table-info table-striped text-center table-bordered" id="just_a_table">
+      <thead>
+        <tr>
+          <th scope="col">เลือก</th>
+          <th scope="col">รหัสวิชา</th>
+          <th scope="col">ชื่อวิชา</th>
+          <th scope="col">คณะ</th>
+          <th scope="col">หน่วยกิต</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of data | filterPipe :{name:searchString,id:searchString,faculty:searchString,unit:searchString} | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
+          <td> <label><input type="checkbox" value="{{item._id}}" (change)="onSetData($event,item._id,i+1)"></label>
+          </td>
+          <td>{{item.id}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.faculty}}</td>
+          <td>{{item.unit}}</td>
+          <td>
+            <button class="btn btn-warning " data-toggle="modal" data-target="#exampleModal2"
+              (click)="onClickEdit(item._id,item.id,item.name,item.faculty,item.unit)"><i
+                class="fa fa-edit"></i>แก้ไข</button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มข้อมูล</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <form [formGroup]="AddSubjectForm" (ngSubmit)="onSubmit()">
+                      <div class="form-group">
+                        <label>รหัสวิชา</label>
+                        <input type="text" class="form-control" placeholder="Ex.Software Testing" formControlName="id"
+                          [ngClass]="{ 'is-invalid': submitted && f.id.errors }" />
+                        <div *ngIf="submitted && f.id.errors" class="invalid-feedback">
+                          <div *ngIf="f.id.errors.required">First Name is required</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>ชื่อวิชา </label>
+                        <input type="text" class="form-control" placeholder="Ex.88622459" formControlName="nameSubject"
+                          [ngClass]="{ 'is-invalid': submitted && f.nameSubject.errors }" />
+                        <div *ngIf="submitted && f.nameSubject.errors" class="invalid-feedback">
+                          <div *ngIf="f.nameSubject.errors.required">First Name is required</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>คณะ </label>
+                        <input type="text" class="form-control" placeholder="Ex.คณะวิทยาการสารสนเทศ"
+                          formControlName="faculty"
+                          [ngClass]="{ 'is-invalid': submitted && f.faculty.errors }" />
+                        <div *ngIf="submitted && f.faculty.errors" class="invalid-feedback">
+                          <div *ngIf="f.faculty.errors.required">First Name is required</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>หน่วยกิต </label>
+                        <input type="text" class="form-control" placeholder="Ex.3" formControlName="unit"
+                          [ngClass]="{ 'is-invalid': submitted && f.unit.errors }" />
+                        <div *ngIf="submitted && f.unit.errors" class="invalid-feedback">
+                          <div *ngIf="f.unit.errors.required">First Name is required</div>
+                        </div>
+                      </div>
+ 
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success" (click)="Edit()">Save
+                      changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>

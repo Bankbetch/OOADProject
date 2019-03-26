@@ -164,6 +164,7 @@ export class SettingUserComponent implements OnInit {
       console.log(username)
       if (event.target.value === username) {
         this.disableButtonDelete = true
+        this.disableButtonEdit = false
       }
     } else {
       var array = this.dataDelete
@@ -273,6 +274,7 @@ export class SettingUserComponent implements OnInit {
   onClickAdmin() {
     if (this.checkG === "เจ้าหน้าที่") {
       this.router.navigate(["/เจ้าหน้าที่/จัดการผู้ใช้งาน"])
+
     } else {
       this.router.navigate(["/หน้าหลัก"])
     }
@@ -360,7 +362,20 @@ export class SettingUserComponent implements OnInit {
       this.disableButtonDelete = false
       this.disableTable = false
       this.disableButtonCreate = false
-      console.log(this.disableButtonCreate)
+      this.registerForm.get('firstName').setValue('');
+      this.registerForm.get('lastName').setValue("");
+      this.registerForm.get('username').setValue("");
+      this.registerForm.get('password').setValue("")
+      this.registerForm.get('confirmPassword').setValue("")
+      this.registerForm.get('type').setValue("นิสิต")
+      this.registerForm.get('email').setValue("")
+      this.registerForm.get('age').setValue("")
+      this.registerForm.get('address').setValue("")
+      this.registerForm.get('post').setValue("")
+      this.ArrayAmphures = ["เลือก"]
+      this.ArrayDistricts = ["เลือก"]
+      this.ArrayZipcode = [""]
+      console.log(this.registerForm.value.aumpher)
     }
   }
 }

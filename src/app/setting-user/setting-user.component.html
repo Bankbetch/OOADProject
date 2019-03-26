@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container w3-animate-opacity">
 
   <br>
   <h1 class="text-secondary text-center">จัดการผู้ใช้งาน</h1>
@@ -11,7 +11,8 @@
             <input type="text" formControlName="firstName" class="form-control"
               [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" (keypress)="isNotNumber($event)" />
             <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-              <div *ngIf="f.firstName.errors.required">First Name is required</div>
+              <div *ngIf="f.firstName.errors.required">First Name is required
+              </div>
             </div>
           </div>
         </div>
@@ -180,17 +181,17 @@
       แก้ไขอมูลเรียบร้อย
     </div>
     <div class="row">
-      <div class="col-3 offset-4 " *ngIf="disableButtonAdd">
+      <div class="col-2 offset-4 " *ngIf="disableButtonAdd">
         <button type="submit" class="btn btn-success btn-lg">
           <i class="fa fa-plus-square"></i> Add
         </button>
       </div>
-      <div class="col-2 offset-3" *ngIf="disableButtonEdit">
+      <div class="col-2 offset-4" *ngIf="disableButtonEdit">
         <button type="button" class="btn btn-warning btn-lg" (click)="onClickEdit()">
           <i class="fa fa-comment"></i> Edit
         </button>
       </div>
-      <div class="col-2" *ngIf="disableButtonDelete">
+      <div class="col-2 offset-4" *ngIf="disableButtonDelete">
         <button type="button" class="btn btn-danger btn-lg" (click)="onClickDelete()"><i class="fa fa-trash"></i>
           Delete</button>
       </div>
@@ -217,7 +218,6 @@
       <thead>
         <tr>
           <th scope="col">เลือก</th>
-          <th scope="col">ที่</th>
           <th scope="col">ชื่อ</th>
           <th scope="col">นามสกุล</th>
           <th scope="col">Username</th>
@@ -235,12 +235,11 @@
       </thead>
       <tbody>
         <tr
-          *ngFor="let item of data | filterPipe :{name:searchString,surname:searchString,username:searchString,types:searchString,age:searchString,email:searchString}; let i = index"
+          *ngFor="let item of data | filterPipe :{name:searchString,surname:searchString,username:searchString,types:searchString,age:searchString,email:searchString}  | paginate: { itemsPerPage: 5, currentPage: p }; let i = index"
           (click)="tableClick(item.name,item.surname,item.username,item.password,item.types,item.age,item.email,item.address,item.tumbon,item.aumpher,item.city,item.post,i+1,$event)">
           <td>
             <label><input type="checkbox" value="{{item.username}}" (change)="onSetData($event,item.username)"></label>
           </td>
-          <th scope="row">{{i+1}}</th>
           <td>{{item.name}}</td>
           <td>{{item.surname}}</td>
           <td>{{item.username}}</td>
@@ -256,5 +255,6 @@
         </tr>
       </tbody>
     </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </div>
 </div>

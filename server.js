@@ -84,7 +84,7 @@ app.post('/deletedata', (req, res) => {
         const db = client.db(dbName)
         console.log("delete")
         const idRemove = req.body
-        const query = { username: { $in: idRemove} };
+        const query = { username: { $in: idRemove } };
         console.log(query)
         db.collection('users').deleteMany(query, (err, obj) => {
             if (err) throw err;
@@ -117,6 +117,100 @@ app.patch('/getdata', (req, res) => {
             if (err) throw err;
             //console.log(result)
             res.json({ status: true })
+            client.close();
+        });
+    })
+})
+
+app.get('/tablesubject/:id', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        db.collection('tableSubject').findOne({ "_id": new ObjectId(req.params.id) }, function (err, result) {
+            res.json({ data: result })
+            client.close();
+        })
+    })
+})
+
+app.get('/tablesubject', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        db.collection('tableSubject').find({}).toArray(function (err, result) {
+            if (err) throw err;
+            res.json({ data: result })
+            client.close();
+        });
+    })
+})
+
+app.post('/tablesubject', (req, res) => {
+    mongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+        const db = client.db(dbName)
+        const newSubject = {
+            id: req.body.id,
+            name: req.body.name,
+            nameTeacher: req.body.nameTeacher,
+            day: req.body.day,
+            timeStart: req.body.timeStart,
+            timeEnd: req.body.timeEnd,
+
+        };
+        //console.log(newSubject)
+        db.collection('tableSubject').insertOne(newSubject, (err, result) => {
+            if (err) throw err
+            client.close()
+            res.json({ status: true })
+        })
+    })
+})
+
+app.patch('/tablesubject/', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        console.log('Connected successfully to server');
+        const db = client.db(dbName)
+        console.log(req.body._id)
+        const EditSubject = {
+            id: req.body.id,
+            name: req.body.name,
+            nameTeacher: req.body.nameTeacher,
+            day: req.body.day,
+            timeStart: req.body.timeStart,
+            timeEnd: req.body.timeEnd,
+
+        };
+        db.collection("tableSubject").update({ _id: new ObjectId(req.body._id) }, EditSubject, function (err, result) {
+            if (err) throw err;
+            console.log(EditSubject)
+            res.json({ status: true })
+            client.close();
+        });
+    })
+})
+
+app.post('/tablesubject/delete', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        var idRemove = []
+        req.body.forEach(function (item) {
+            idRemove.push(new ObjectId(item))
+        })
+        const query = { _id: { $in: idRemove } }
+        console.log(query)
+        db.collection('tableSubject').deleteMany(query, (err, obj) => {
+            if (err) throw err;
+            console.log("document deleted")
+            res.json({ data: obj })
+            client.close();
+        });
+    })
+})
+
+app.get('/incres', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        db.collection('builds').find({}).toArray(function (err, result) {
+            if (err) throw err;
+            res.json({ data: result })
             client.close();
         });
     })

@@ -71,6 +71,7 @@ export class MainComponent implements OnInit {
   checkNavbarAdminManagPersonalExcame = "false"
   checkNavbarAdminManageExcameNisit = "false"
   checkNavbarAdminManageRoom = "false"
+  checkNavbarAdminBuild = "false"
 
   ChckType() {
     if (this.checkG === "นิสิต") {
@@ -115,12 +116,14 @@ export class MainComponent implements OnInit {
       this.checkNavbarAdminManagPersonalExcame = "true"
       this.checkNavbarAdminManageExcameNisit = "true"
       this.checkNavbarAdminManageRoom = "true"
+      this.checkNavbarAdminBuild = "true"
       localStorage.setItem("checknavBarAdmin", this.checknavBarAdmin)
       localStorage.setItem("checkNavbarAdminManageUser", this.checkNavbarAdminManageUser)
       localStorage.setItem("checkNavbarAdminManageExcame", this.checkNavbarAdminManageExcame)
       localStorage.setItem("checkNavbarAdminManagPersonalExcame", this.checkNavbarAdminManagPersonalExcame)
       localStorage.setItem("checkNavbarAdminManageExcameNisit", this.checkNavbarAdminManageExcameNisit)
       localStorage.setItem("checkNavbarAdminManageRoom", this.checkNavbarAdminManageRoom)
+      localStorage.setItem("checkNavbarAdminBuild", this.checkNavbarAdminBuild)
     }
   }
   onClickAdmin() {
