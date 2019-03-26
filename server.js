@@ -216,6 +216,72 @@ app.get('/incres', (req, res) => {
     })
 })
 
+app.get('/getroom', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        db.collection('builds').find({}).toArray(function (err, result) {
+            if (err) throw err;
+            res.json({ data: result })
+            client.close();
+        });
+    })
+})
+
+app.post('/addroom', (req, res) => {
+    mongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+        const db = client.db(dbName)
+        const newRoom = {
+            build: req.body.build,
+            room: req.body.room,
+            sit: req.body.sit,
+            status: req.body.status,
+        };
+        //console.log(newSubject)
+        db.collection('builds').insertOne(newRoom, (err, result) => {
+            if (err) throw err
+            client.close()
+            res.json({ status: true })
+        })
+    })
+})
+
+app.post('/deleteroom', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        var idRemove = []
+        req.body.forEach(function (item) {
+            idRemove.push(new ObjectId(item))
+        })
+        const query = { _id: { $in: idRemove } }
+        console.log(query)
+        db.collection('builds').deleteMany(query, (err, obj) => {
+            if (err) throw err;
+            console.log("document deleted")
+            res.json({ data: obj })
+            client.close();
+        });
+    })
+})
+
+app.patch('/editroom/', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        console.log('Connected successfully to server');
+        const db = client.db(dbName)
+        console.log(req.body._id)
+        const editRoom = {
+            build: req.body.build,
+            room: req.body.room,
+            sit: req.body.sit,
+            status: req.body.status,
+        };
+        db.collection("builds").update({ _id: new ObjectId(req.body._id) }, editRoom, function (err, result) {
+            if (err) throw err;
+            console.log(editRoom)
+            res.json({ status: true })
+            client.close();
+        });
+    })
+})
 app.listen(port, () => {
     console.log(`App listening on ${port}`)
 })

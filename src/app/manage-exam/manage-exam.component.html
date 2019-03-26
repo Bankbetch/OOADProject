@@ -1,4 +1,5 @@
 <div class="container w3-animate-opacity">
+  <h1 class="text-secondary text-center">จัดการวิชา</h1>
   <br>
   <div class="row">
     <div class="col-sm-">
@@ -129,8 +130,7 @@
                       <div class="form-group">
                         <label>คณะ </label>
                         <input type="text" class="form-control" placeholder="Ex.คณะวิทยาการสารสนเทศ"
-                          formControlName="faculty"
-                          [ngClass]="{ 'is-invalid': submitted && f.faculty.errors }" />
+                          formControlName="faculty" [ngClass]="{ 'is-invalid': submitted && f.faculty.errors }" />
                         <div *ngIf="submitted && f.faculty.errors" class="invalid-feedback">
                           <div *ngIf="f.faculty.errors.required">First Name is required</div>
                         </div>
@@ -143,7 +143,7 @@
                           <div *ngIf="f.unit.errors.required">First Name is required</div>
                         </div>
                       </div>
- 
+
                     </form>
                   </div>
                   <div class="modal-footer">
