@@ -143,7 +143,7 @@ export class SettingUserComponent implements OnInit {
         this.allowAlertAdd = false
       }, 5000);
       var obj = { name: this.registerForm.value.firstName, surname: this.registerForm.value.lastName, username: this.registerForm.value.username, password: this.registerForm.value.password, types: this.registerForm.value.type, age: this.registerForm.value.age, email: this.registerForm.value.email, address: this.registerForm.value.address, tumbon: this.registerForm.value.tumbon, aumpher: this.registerForm.value.aumpher, city: this.registerForm.value.province, post: this.registerForm.value.post }
-      this.http.post<any>('http://localhost:4001/settinguser', obj).subscribe((res) => {
+      this.http.post<any>('https://young-forest-69844.herokuapp.com/settinguser', obj).subscribe((res) => {
         this.onGetTable()
         this.OnClear()
       })
@@ -163,7 +163,7 @@ export class SettingUserComponent implements OnInit {
       }, 5000);
       var obj = { name: this.registerForm.value.firstName, surname: this.registerForm.value.lastName, username: this.registerForm.value.username, password: this.registerForm.value.password, types: this.registerForm.value.type, age: this.registerForm.value.age, email: this.registerForm.value.email, address: this.registerForm.value.address, tumbon: this.registerForm.value.tumbon, aumpher: this.registerForm.value.aumpher, city: this.registerForm.value.province, post: this.registerForm.value.post }
       console.log(this.registerForm.value.type)
-      this.http.patch<any>('http://localhost:4001/getdata/', obj).subscribe((res) => {
+      this.http.patch<any>('https://young-forest-69844.herokuapp.com/getdata/', obj).subscribe((res) => {
         console.log("test2")
         this.disableButtonAdd = false
         this.onGetTable()
@@ -204,7 +204,7 @@ export class SettingUserComponent implements OnInit {
         setTimeout(() => {
           this.allowAlertDelete = false
         }, 5000);
-        this.http.post('http://localhost:4001/deletedata/', this.dataDelete).subscribe((res) => {
+        this.http.post('https://young-forest-69844.herokuapp.com/deletedata/', this.dataDelete).subscribe((res) => {
           this.onGetTable()
           this.OnClear()
         })
@@ -217,7 +217,7 @@ export class SettingUserComponent implements OnInit {
   }
 
   onGetTable() {
-    this.http.get<any>("http://localhost:4001/getdata").subscribe(result => {  
+    this.http.get<any>("https://young-forest-69844.herokuapp.com/getdata").subscribe(result => {  
     this.data = result.data
     this.checkData = true;
     this.showSpinner()

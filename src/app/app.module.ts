@@ -14,6 +14,9 @@ import { ManageExamComponent } from './manage-exam/manage-exam.component';
 import { AddSubjectComponent } from './manage-exam/add-subject/add-subject.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ManageBuildComponent } from './manage-build/manage-build.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
+
 const router: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -45,7 +48,8 @@ const router: Routes = [
     RouterModule.forRoot(router, { enableTracing: false }),
     HttpClientModule,
     ReactiveFormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
