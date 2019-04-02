@@ -10,6 +10,9 @@ import amphures from '../../../json/amphures.json'
 import districts from '../../../json/districts.json'
 import zipcode from '../../../json/zipcodes.json'
 import { FilterPipe } from './FilterPipe.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+
 declare var $: any;
 
 
@@ -81,12 +84,16 @@ export class SettingUserComponent implements OnInit {
   disableSelectbox = true
   checkG = ""
   getLogin = ""
-  constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router, private titleService: Title) {
+  checkData = false;
+  constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router, private titleService: Title, private spinner: NgxSpinnerService) {
     this.titleService.setTitle("จัดการผู้ใช้งาน");
   }
 
+      
+    
   public ngOnInit() {
     this.onGetTable(),
+    this.showSpinner(),
       this.registerForm = this.formBuilder.group({
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
@@ -105,11 +112,24 @@ export class SettingUserComponent implements OnInit {
         {
           validator: MustMatch('password', 'confirmPassword')
         }), this.check(), this.checkLogin(), this.onClickAdmin(), this.registerForm.get('type').setValue("นิสิต"), this.registerForm.get('aumpher').setValue("เลือก"), this.registerForm.get('tumbon').setValue("เลือก")
-  }
+      }
 
 
   get f() { return this.registerForm.controls; }
 
+  showSpinner() {
+    console.log(this.checkData)
+    if( this.checkData == false){
+    this.spinner.show();
+    }
+    else if(this.checkData == true){
+      
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+   
+    }
+    
+  } 
 
   onSubmit() {
     this.submitted = true;
@@ -197,8 +217,10 @@ export class SettingUserComponent implements OnInit {
   }
 
   onGetTable() {
-    this.http.get<any>("http://localhost:4001/getdata").subscribe(result => {
-      this.data = result.data
+    this.http.get<any>("http://localhost:4001/getdata").subscribe(result => {  
+    this.data = result.data
+    this.checkData = true;
+    this.showSpinner()
     })
   }
 
