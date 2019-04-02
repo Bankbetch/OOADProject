@@ -18,7 +18,7 @@ export class ManageBuildComponent implements OnInit {
   manageBuild: FormGroup
   arrayDeleteCheck = ""
   dataDelete: Array<String> = [];
-
+p
   constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title) {
     this.title.setTitle("จัดการตึก")
   }

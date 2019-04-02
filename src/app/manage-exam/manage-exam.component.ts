@@ -18,6 +18,7 @@ export class ManageExamComponent implements OnInit {
   dataDelete: Array<String> = [];
   AddSubjectForm: FormGroup;
   disableLaleId = false
+  p
   constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title) {
     this.title.setTitle("ดูรายวิชา")
   }

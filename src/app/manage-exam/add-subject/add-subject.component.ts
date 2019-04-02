@@ -31,6 +31,7 @@ export class AddSubjectComponent implements OnInit {
         timeEnd: ['', Validators.required],
       })
   }
+  get f() { return this.addIncres.controls; }
   check() {
     var check = localStorage.getItem("check")
     var getLogin = localStorage.getItem("setLogin")
