@@ -246,12 +246,15 @@ export class SettingUserComponent implements OnInit {
     this.disableButtonEdit = true
     this.disableButtonCreate = true
     this.disableButtonDelete = false
+    this.disableTable = false
+    this.disableButtonCreate = false
   }
 
   OnClear() {
     this.disableSelectbox = false
     this.disableButtonAdd = false
     this.disableButtonEdit = false
+    
     this.submitted = false
     this.registerForm.get('firstName').setValue('');
     this.registerForm.get('lastName').setValue("");
@@ -271,8 +274,9 @@ export class SettingUserComponent implements OnInit {
     this.registerForm.controls['username'].enable()
     this.checkForm = false
     this.disableButtonCreate = true
+    this.disableButtonDelete = true
     this.disableTable = true
-    this.disableButtonDelete = false
+
   }
 
 
@@ -376,6 +380,7 @@ export class SettingUserComponent implements OnInit {
   disableButtonCreate = true
   disableButtonDelete = true
   disableTable = true
+
   showButtonAdd() {
     this.checkForm = true
     if (this.checkForm = true) {
