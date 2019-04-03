@@ -201,13 +201,13 @@
     </div>
     <div class="row">
       <div class="col-2 offset-4 " *ngIf="disableButtonAdd">
-        <button type="submit" class="btn btn-success btn-lg">
-          <i class="fa fa-plus-square"></i> Add
+        <button type="submit" class="btn btn-outline-primary btn-lg">
+          <i class="fa fa-plus-square"></i> ยืนยัน
         </button>
       </div>
       <div class="col-2 offset-4" *ngIf="disableButtonEdit">
-        <button type="button" class="btn btn-warning btn-lg" (click)="onClickEdit()">
-          <i class="fa fa-comment"></i> Edit
+        <button type="button" class="btn btn-outline-warning btn-lg" (click)="onClickEdit()">
+          <i class="fa fa-comment"></i> ยืนยัน
         </button>
       </div>
       <div class="col-2 offset-4" *ngIf="disableButtonDelete">
@@ -216,7 +216,7 @@
         </button>
       </div>
       <div class="col-3 offset-0">
-        <button type="button" class="btn btn-info btn-lg" (click)="OnClear()">
+        <button type="button" class="btn btn-outline-info btn-lg" (click)="OnClear()">
           <i class="fa fa-times-circle"></i> Cancle
         </button>
       </div>
@@ -238,13 +238,11 @@
     </div>
     <div class="col-3 col-sm-3"></div>
     <div class="col">
-      <button class="btn btn-outline-danger" (click)="onClickDelete()">
+      <button class="btn btn-outline-danger" (click)="onClickDelete()" *ngIf="disableButtonDelete">
         <i class="fa fa-trash"></i>ลบที่เลือก
       </button>
       &nbsp;
-      <button class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal2" (click)="
-          onClickEdit(item._id, item.id, item.name, item.faculty, item.unit)
-        ">
+      <button class="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal2" (click)="showButtonAdd()" *ngIf="disableButtonCreate">
         <i class="fa fa-user-plus"></i>เพิ่มผู้ใช้
       </button>
     </div>

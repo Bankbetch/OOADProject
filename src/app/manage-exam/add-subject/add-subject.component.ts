@@ -13,6 +13,7 @@ export class AddSubjectComponent implements OnInit {
   checkG = "false"
   getLogin = "false"
   addIncres: FormGroup;
+  p
   constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title) {
     this.title.setTitle("เพิ่มรายวิชาสอน")
   }
