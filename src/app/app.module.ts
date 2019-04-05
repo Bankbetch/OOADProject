@@ -15,7 +15,7 @@ import { AddSubjectComponent } from './manage-exam/add-subject/add-subject.compo
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ManageBuildComponent } from './manage-build/manage-build.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import { OrderModule } from 'ngx-order-pipe';
 
 const router: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -49,7 +49,8 @@ const router: Routes = [
     HttpClientModule,
     ReactiveFormsModule,
     NgxPaginationModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    OrderModule
   ],
   providers: [],
   bootstrap: [AppComponent],

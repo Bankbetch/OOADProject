@@ -11,7 +11,9 @@ import districts from '../../../json/districts.json'
 import zipcode from '../../../json/zipcodes.json'
 import { FilterPipe } from './FilterPipe.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as XLSX from 'xlsx';
 
+import { OrderPipe } from 'ngx-order-pipe';
 
 declare var $: any;
 
@@ -85,15 +87,16 @@ export class SettingUserComponent implements OnInit {
   checkG = ""
   getLogin = ""
   checkData = false;
-  constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router, private titleService: Title, private spinner: NgxSpinnerService) {
+  sortedCollection: any[];
+  constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router, private titleService: Title, private spinner: NgxSpinnerService, private orderPipe: OrderPipe) {
     this.titleService.setTitle("จัดการผู้ใช้งาน");
   }
 
-      
-    
+
+
   public ngOnInit() {
     this.onGetTable(),
-    this.showSpinner(),
+      this.showSpinner(),
       this.registerForm = this.formBuilder.group({
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
@@ -112,77 +115,92 @@ export class SettingUserComponent implements OnInit {
         {
           validator: MustMatch('password', 'confirmPassword')
         }), this.check(), this.checkLogin(), this.onClickAdmin(), this.registerForm.get('type').setValue("นิสิต"), this.registerForm.get('aumpher').setValue("เลือก"), this.registerForm.get('tumbon').setValue("เลือก")
-      }
+  }
 
 
   get f() { return this.registerForm.controls; }
 
   showSpinner() {
-    console.log(this.checkData)
-    if( this.checkData == false){
-    this.spinner.show();
+    if (this.checkData == false) {
+      this.spinner.show();
     }
-    else if(this.checkData == true){
-      
-        /** spinner ends after 5 seconds */
-        this.spinner.hide();
-   
+    else if (this.checkData == true) {
+
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+
     }
-    
-  } 
+
+  }
 
   onSubmit() {
+    this.disableAll = false
     this.submitted = true;
     if (this.registerForm.invalid) {
       return;
     }
-    var r = confirm("กดokเพื่อเพิ่มข้อมูล");
-    if (r == true) {
+    // var r = confirm("กดokเพื่อเพิ่มข้อมูล");
+    // if (r == true) {
+    // this.allowAlertAdd = true
+    // setTimeout(() => {
+    //   this.allowAlertAdd = false
+    // }, 5000);
+    var obj = { name: this.registerForm.value.firstName, surname: this.registerForm.value.lastName, username: this.registerForm.value.username, password: this.registerForm.value.password, types: this.registerForm.value.type, age: this.registerForm.value.age, email: this.registerForm.value.email, address: this.registerForm.value.address, tumbon: this.registerForm.value.tumbon, aumpher: this.registerForm.value.aumpher, city: this.registerForm.value.province, post: this.registerForm.value.post }
+    this.http.post<any>('http://localhost:4001/settinguser', obj).subscribe((res) => {
       this.allowAlertAdd = true
       setTimeout(() => {
         this.allowAlertAdd = false
       }, 5000);
-      var obj = { name: this.registerForm.value.firstName, surname: this.registerForm.value.lastName, username: this.registerForm.value.username, password: this.registerForm.value.password, types: this.registerForm.value.type, age: this.registerForm.value.age, email: this.registerForm.value.email, address: this.registerForm.value.address, tumbon: this.registerForm.value.tumbon, aumpher: this.registerForm.value.aumpher, city: this.registerForm.value.province, post: this.registerForm.value.post }
-      this.http.post<any>('https://young-forest-69844.herokuapp.com/settinguser', obj).subscribe((res) => {
-        this.onGetTable()
-        this.OnClear()
-      })
-    }
+      this.onGetTable()
+      this.OnClear()
+    })
+    // }
   }
 
   onClickEdit() {
+    console.log(this.registerForm.value.username)
     this.submitted = true;
     if (this.registerForm.invalid) {
       return;
     }
-    var r = confirm("กดokเพื่อแกไขข้อมูล");
-    if (r == true) {
+    // var r = confirm("กดokเพื่อแกไขข้อมูล");
+    // if (r == true) {
+    var obj = { name: this.registerForm.value.firstName, surname: this.registerForm.value.lastName, username: this.registerForm.value.username, password: this.registerForm.value.password, types: this.registerForm.value.type, age: this.registerForm.value.age, email: this.registerForm.value.email, address: this.registerForm.value.address, tumbon: this.registerForm.value.tumbon, aumpher: this.registerForm.value.aumpher, city: this.registerForm.value.province, post: this.registerForm.value.post }
+    this.http.patch<any>('http://localhost:4001/getdata/', obj).subscribe((res) => {
+
       this.allowAlertEdit = true
       setTimeout(() => {
         this.allowAlertEdit = false
       }, 5000);
-      var obj = { name: this.registerForm.value.firstName, surname: this.registerForm.value.lastName, username: this.registerForm.value.username, password: this.registerForm.value.password, types: this.registerForm.value.type, age: this.registerForm.value.age, email: this.registerForm.value.email, address: this.registerForm.value.address, tumbon: this.registerForm.value.tumbon, aumpher: this.registerForm.value.aumpher, city: this.registerForm.value.province, post: this.registerForm.value.post }
-      console.log(this.registerForm.value.type)
-      this.http.patch<any>('https://young-forest-69844.herokuapp.com/getdata/', obj).subscribe((res) => {
-        console.log("test2")
-        this.disableButtonAdd = false
-        this.onGetTable()
-        this.OnClear()
-      })
-    }
+      this.onGetTable()
+      this.OnClear()
+    })
+    // }
 
   }
 
-
-
-
-  onSetData(event, username: string) {
+  OnclearHide() {
+    this.registerForm.controls['username'].enable()
+    this.registerForm.controls['firstName'].enable()
+    this.registerForm.controls["lastName"].enable()
+    this.registerForm.controls['password'].enable()
+    this.registerForm.controls['confirmPassword'].enable()
+    this.registerForm.controls['type'].enable()
+    this.registerForm.controls["email"].enable()
+    this.registerForm.controls['age'].enable()
+    this.registerForm.controls['address'].enable()
+    this.registerForm.controls['aumpher'].enable()
+    this.registerForm.controls['tumbon'].enable()
+    this.registerForm.controls['province'].enable()
+    this.registerForm.controls['post'].enable()
+    this.disableAll = false
+    this.OnClear()
+  }
+  onSetData(event, _id: string) {
     if (event.target.checked) {
       this.arrayDeleteCheck = event.target.value
       this.dataDelete.push(this.arrayDeleteCheck)
-      console.log(event.target.value)
-      console.log(username)
-      if (event.target.value === username) {
+      if (event.target.value === _id) {
         this.disableButtonDelete = true
         this.disableButtonEdit = false
       }
@@ -194,17 +212,18 @@ export class SettingUserComponent implements OnInit {
         this.dataDelete = array
       }
     }
-
+    console.log(this.arrayDeleteCheck)
   }
   onClickDelete() {
     var r = confirm("กดokเพื่อลบข้อมูล");
+
     if (r == true) {
       if (this.arrayDeleteCheck !== "" && this.dataDelete.length > 0) {
         this.allowAlertDelete = true
         setTimeout(() => {
           this.allowAlertDelete = false
         }, 5000);
-        this.http.post('https://young-forest-69844.herokuapp.com/deletedata/', this.dataDelete).subscribe((res) => {
+        this.http.post('http://localhost:4001/deletedata', this.dataDelete).subscribe((res) => {
           this.onGetTable()
           this.OnClear()
         })
@@ -215,12 +234,30 @@ export class SettingUserComponent implements OnInit {
     }
 
   }
-
+  lenghtData: Number
   onGetTable() {
-    this.http.get<any>("https://young-forest-69844.herokuapp.com/getdata").subscribe(result => {  
-    this.data = result.data
-    this.checkData = true;
-    this.showSpinner()
+    this.http.get<any>("http://localhost:4001/getdata").subscribe(result => {
+      this.data = result.data
+      this.checkData = true;
+      this.showSpinner()
+      this.sortedCollection = this.orderPipe.transform(this.data, '');
+      this.lenghtData = this.sortedCollection.length
+      this.otShow = [{
+        number: 5,
+      },
+      {
+        number: 10
+      },
+      {
+        number: 20,
+      },
+      {
+        number: 50,
+      },
+      {
+        number: this.lenghtData,
+      }]
+      // console.log(this.sortedCollection);
     })
   }
 
@@ -240,21 +277,63 @@ export class SettingUserComponent implements OnInit {
     this.registerForm.get('province').setValue(city)
     this.registerForm.get('post').setValue(post)
     this.disableSelectbox = false
+    this.disableAll = false
+    this.bfunc()
+    this.registerForm.controls['username'].enable()
+    this.registerForm.controls['firstName'].enable()
+    this.registerForm.controls["lastName"].enable()
+    this.registerForm.controls['password'].enable()
+    this.registerForm.controls['confirmPassword'].enable()
+    this.registerForm.controls['type'].enable()
+    this.registerForm.controls["email"].enable()
+    this.registerForm.controls['age'].enable()
+    this.registerForm.controls['address'].enable()
+    this.registerForm.controls['aumpher'].enable()
+    this.registerForm.controls['tumbon'].enable()
+    this.registerForm.controls['province'].enable()
+    this.registerForm.controls['post'].enable()
+    var element = <HTMLInputElement>document.getElementById("ipUsername");
+    element.disabled = true;
+    console.log(this.registerForm.value)
+
+  }
+  disableAll = false
+
+  tableClickDisable(name: string, surname: string, username: string, password: string, status: string, age: string, email: string, address: string, aumpher: string, tumbon: string, city: string, post: string, i: number, event) {
+    this.registerForm.get('firstName').setValue(name);
+    this.registerForm.get('lastName').setValue(surname);
+    this.registerForm.get('username').setValue(username);
+    this.registerForm.get('password').setValue(password)
+    this.registerForm.get('confirmPassword').setValue(password)
+    this.registerForm.get('type').setValue(status)
+    this.registerForm.get('email').setValue(email)
+    this.registerForm.get('age').setValue(age)
+    this.registerForm.get('address').setValue(address)
+    this.registerForm.get('aumpher').setValue(tumbon)
+    this.registerForm.get('tumbon').setValue(aumpher)
+    this.registerForm.get('province').setValue(city)
+    this.registerForm.get('post').setValue(post)
+    this.disableSelectbox = false
     this.bfunc()
     this.registerForm.controls['username'].disable()
-    this.checkForm = true
-    this.disableButtonEdit = true
-    this.disableButtonCreate = true
-    this.disableButtonDelete = false
-    this.disableTable = false
-    this.disableButtonCreate = false
+    this.registerForm.controls['firstName'].disable()
+    this.registerForm.controls["lastName"].disable()
+    this.registerForm.controls['password'].disable()
+    this.registerForm.controls['confirmPassword'].disable()
+    this.registerForm.controls['type'].disable()
+    this.registerForm.controls["email"].disable()
+    this.registerForm.controls['age'].disable()
+    this.registerForm.controls['address'].disable()
+    this.registerForm.controls['aumpher'].disable()
+    this.registerForm.controls['tumbon'].disable()
+    this.registerForm.controls['province'].disable()
+    this.registerForm.controls['post'].disable()
   }
 
+
   OnClear() {
+    console.log("clear")
     this.disableSelectbox = false
-    this.disableButtonAdd = false
-    this.disableButtonEdit = false
-    
     this.submitted = false
     this.registerForm.get('firstName').setValue('');
     this.registerForm.get('lastName').setValue("");
@@ -272,10 +351,6 @@ export class SettingUserComponent implements OnInit {
     this.onGetTable()
     this.dataDelete = []
     this.registerForm.controls['username'].enable()
-    this.checkForm = false
-    this.disableButtonCreate = true
-    this.disableButtonDelete = true
-    this.disableTable = true
 
   }
 
@@ -405,4 +480,85 @@ export class SettingUserComponent implements OnInit {
       console.log(this.registerForm.value.aumpher)
     }
   }
+
+  arrayBuffer: any;
+  arrayTest: any
+  file: File;
+  arrayName = []
+  arraySurname = []
+  arrayId = []
+  arrayStatus = []
+  arrayEmail = []
+  incomingfile(event) {
+    this.file = event.target.files[0];
+  }
+  Upload() {
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      this.arrayBuffer = fileReader.result;
+      var data = new Uint8Array(this.arrayBuffer);
+      var arr = new Array();
+      for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+      var bstr = arr.join("");
+      var workbook = XLSX.read(bstr, { type: "binary" });
+      var first_sheet_name = workbook.SheetNames[0];
+      var worksheet = workbook.Sheets[first_sheet_name];
+      var test = XLSX.utils.sheet_to_json(worksheet, { raw: true })
+      this.arrayTest = test
+
+      // console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+      this.setDataExcel()
+    }
+    fileReader.readAsArrayBuffer(this.file);
+  }
+  obj
+  total = []
+  testexcel() {
+    var obj = this.total
+
+    this.http.post<any>('http://localhost:4001/excel', obj).subscribe((res) => {
+      console.log(obj)
+    })
+    this.onGetTable()
+  }
+  setDataExcel() {
+    for (let item of this.arrayTest) {
+      var splitted = item.ชื่อ.split(" ");
+      this.arrayName.push(splitted[1])
+      this.arraySurname.push(splitted[2])
+      this.arrayId.push(item.รหัส)
+      this.arrayStatus.push(item.status)
+      this.arrayEmail.push(item.รหัส + "@go.buu.ac.th")
+    }
+
+    var array = this.arrayTest
+    this.obj
+    for (var i = 0; i < array.length; i++) {
+      this.obj = { name: this.arrayName[i], surname: this.arraySurname[i], username: this.arrayId[i], password: this.arrayId[i], types: this.arrayStatus[i], email: this.arrayId[i] + "@go.buu.ac.th" }
+      this.total.push(this.obj)
+      // console.log(this.total)
+    }
+    // this.obj = [{ name: this.arrayName, surname: this.arraySurname, username: this.arrayId, password: this.arrayId, types: this.arrayStatus, email: this.arrayEmail }]
+    // console.log(this.obj)
+    // var total = []
+    // for (let item of this.obj) {
+    //   total = [
+    //     { name: item.username + item.surname },
+    //   ]
+    // }
+    // console.log(total)
+
+  }
+  dataOtShow = 5
+
+  otShow = []
+  order: string
+  reverse: boolean = false;
+  setOrder(value: string) {
+    if (this.order === value) {
+      this.reverse = !this.reverse;
+    }
+    this.order = value;
+  }
+
 }

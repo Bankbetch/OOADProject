@@ -52,7 +52,7 @@ export class ManageExamComponent implements OnInit {
   }
   getTable() {
 
-    this.http.get<any>('https://young-forest-69844.herokuapp.com/tablesubject').subscribe(result => {
+    this.http.get<any>('http://localhost:4001/tablesubject').subscribe(result => {
       this.data = result.data
     })
 
@@ -64,7 +64,7 @@ export class ManageExamComponent implements OnInit {
       return;
     }
     var obj = { id: this.AddSubjectForm.value.id, name: this.AddSubjectForm.value.nameSubject, faculty: this.AddSubjectForm.value.faculty, unit: this.AddSubjectForm.value.unit }
-    this.http.post<any>('https://young-forest-69844.herokuapp.com/tablesubject', obj).subscribe((res) => {
+    this.http.post<any>('http://localhost:4001/tablesubject', obj).subscribe((res) => {
       // this.getTable()
       window.location.reload()
     })
@@ -89,7 +89,7 @@ export class ManageExamComponent implements OnInit {
     var r = confirm("กดokเพื่อลบข้อมูล");
     if (r == true) {
       if (this.arrayDeleteCheck !== "" && this.dataDelete.length > 0) {
-        this.http.post('https://young-forest-69844.herokuapp.com/tablesubject/delete', this.dataDelete).subscribe((res) => {
+        this.http.post('http://localhost:4001/tablesubject/delete', this.dataDelete).subscribe((res) => {
 
           this.getTable()
         })
@@ -118,7 +118,7 @@ export class ManageExamComponent implements OnInit {
     }
     var obj = { _id: this._id, id: this.id, name: this.AddSubjectForm.value.nameSubject, faculty: this.AddSubjectForm.value.faculty, unit: this.AddSubjectForm.value.unit }
     console.log(this.id)
-    this.http.patch<any>('https://young-forest-69844.herokuapp.com/tablesubject/', obj).subscribe((res) => {
+    this.http.patch<any>('http://localhost:4001/tablesubject/', obj).subscribe((res) => {
       console.log("EditSuccess")
       window.location.reload()
     })

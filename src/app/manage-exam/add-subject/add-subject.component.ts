@@ -50,7 +50,7 @@ export class AddSubjectComponent implements OnInit {
     }
   }
   getBuilding() {
-    this.http.get<any>('https://young-forest-69844.herokuapp.com/incres').subscribe(result => {
+    this.http.get<any>('http://localhost:4001/incres').subscribe(result => {
       this.data = result.data
     })
   }

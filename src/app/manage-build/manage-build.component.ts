@@ -56,7 +56,7 @@ p
     }
   }
   getTable() {
-    this.http.get<any>('https://young-forest-69844.herokuapp.com/getroom').subscribe(result => {
+    this.http.get<any>('http://localhost:4001/getroom').subscribe(result => {
       this.data = result.data
     })
   }
@@ -67,7 +67,7 @@ p
       return;
     }
     var obj = { build: this.manageBuild.value.build, room: this.manageBuild.value.room, sit: this.manageBuild.value.sit, status: this.manageBuild.value.status }
-    this.http.post<any>('https://young-forest-69844.herokuapp.com/addroom', obj).subscribe((res) => {
+    this.http.post<any>('http://localhost:4001/addroom', obj).subscribe((res) => {
       // this.getTable()
       window.location.reload()
     })
@@ -92,7 +92,7 @@ p
     var r = confirm("กดokเพื่อลบข้อมูล");
     if (r == true) {
       if (this.arrayDeleteCheck !== "" && this.dataDelete.length > 0) {
-        this.http.post('https://young-forest-69844.herokuapp.com/deleteroom', this.dataDelete).subscribe((res) => {
+        this.http.post('http://localhost:4001/deleteroom', this.dataDelete).subscribe((res) => {
           this.getTable()
         })
       }
@@ -118,7 +118,7 @@ p
       return;
     }
     var obj = { _id: this._id, build: this.manageBuild.value.build, room: this.manageBuild.value.room, sit: this.manageBuild.value.sit, status: this.manageBuild.value.status }
-    this.http.patch<any>('https://young-forest-69844.herokuapp.com/editroom/', obj).subscribe((res) => {
+    this.http.patch<any>('http://localhost:4001/editroom/', obj).subscribe((res) => {
       console.log("EditSuccess")
       window.location.reload()
     })
