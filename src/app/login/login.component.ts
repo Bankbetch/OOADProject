@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   onSignin() {
     var data = { username: this.username, password: this.password }
-    axios.post("https://young-forest-69844.herokuapp.com/login", data).then((res) => {
+    axios.post("http://localhost:4001/login", data).then((res) => {
       var checkUsername = res.data.username
       var checkPassword = res.data.password
       var checkTypes = res.data.types
