@@ -1,24 +1,10 @@
-.bgimg {
-    background-image: url('https://raw.githubusercontent.com/Nuttapus/ooadLogin/master/src/assets/img/joshua-earle-506360-unsplash.jpg');
-    min-height: 100%;
-    background-position: center;
-    background-size: cover;
-  }
-  .pageLogin{
-      height: 1200px;
-      font-family: "Raleway", sans-serif;
-  }
-  
-  #login .container #login-row #login-column #login-box {
-      margin-top: 50%;
-      max-width: 600px;
-      height: 350px;
-      background-color: #EAEAEA;
-      background-color:rgba(0, 0, 0, 0.5);
-    }
-    #login .container #login-row #login-column #login-box #login-form {
-      padding: 20px;
-    }
-    #login .container #login-row #login-column #login-box #login-form #register-link {
-      margin-top: -85px;
-    }
+.bg{
+  height: 100vh;
+  background-color: rgb(240, 240, 240);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.display-center {
+  margin-top: 50%;
+}
