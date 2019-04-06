@@ -513,8 +513,7 @@
     </div>
     <div class="col-8" *ngIf="disableTable">
       <div class="input-group">
-        <input type="text" class="form-control" name="searchString" placeholder="Type to search..."
-          [(ngModel)]="searchString" />
+        <input type="text" class="form-control" name="searchString" placeholder="ค้นหา." [(ngModel)]="searchString" />
         <div class="input-group-prepend bg-white">
           <span class="input-group-text border-left-0 rounded-right bg-white">
             <i class="fa fa-search"></i>
@@ -539,7 +538,6 @@
     </div>
   </div>
   <br />
-  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="large" color="#934d4d" type="ball-8bits"></ngx-spinner>
   <div class="table-responsive" *ngIf="disableTable">
     <table class="table table-hove table-striped text-center" id="just_a_table">
       <thead>
@@ -633,3 +631,6 @@
 <button type="button" class="btn btn-info" (click)="Upload()">Upload</button>
 
 <button type="button" class="btn btn-info" (click)="testexcel()">data</button> -->
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

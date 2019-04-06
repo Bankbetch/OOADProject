@@ -88,7 +88,9 @@ export class SettingUserComponent implements OnInit {
   getLogin = ""
   checkData = false;
   sortedCollection: any[];
-  constructor(private http: HttpClient, private formBuilder: FormBuilder, private router: Router, private titleService: Title, private spinner: NgxSpinnerService, private orderPipe: OrderPipe) {
+  constructor(private http: HttpClient, private formBuilder: FormBuilder, 
+    private router: Router, private titleService: Title, 
+    private spinner: NgxSpinnerService, private orderPipe: OrderPipe) {
     this.titleService.setTitle("จัดการผู้ใช้งาน");
   }
 

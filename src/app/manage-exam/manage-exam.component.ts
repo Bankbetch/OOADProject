@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from "@angular/platform-browser";
-
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-manage-exam',
   templateUrl: './manage-exam.component.html',
@@ -14,26 +14,57 @@ export class ManageExamComponent implements OnInit {
   getLogin = "false"
   searchString
   submitted = false;
-  arrayDeleteCheck = ""
-  dataDelete: Array<String> = [];
-  AddSubjectForm: FormGroup;
-  disableLaleId = false
+  addIncres: FormGroup;
   p
-  constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title) {
-    this.title.setTitle("ดูรายวิชา")
+  dataOtShow = 5
+  otShow = []
+  year = []
+  term = []
+  getRoom: any[]
+  lenghtData: Number
+  spliteBuild = []
+  dataSpliteBuild
+  dataTeacher: any[]
+  checkData = false
+  constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title, private spinner: NgxSpinnerService) {
+    this.title.setTitle("จัดการวิชา")
   }
-  data: any[]
+  dataRoom: any[]
+  dataSubject: any[]
+  dataSubjectLearn: any[]
+  selectedItems = [];
+  dropdownSettings = {};
   public ngOnInit() {
-    this.check(), this.onClickAdmin(), this.getTable(),
-
-      this.AddSubjectForm = this.formBuilder.group({
-        id: ['', Validators.required],
-        nameSubject: ['', Validators.required],
-        faculty: ['', Validators.required],
-        unit: ['', Validators.required]
-      })
+    this.check(), this.onClickAdmin(), this.getBuilding(), this.getSubject(), this.getSubjectLearn()
+    this.addIncres = this.formBuilder.group({
+      id: ['', Validators.required],
+      nameSubject: ['', Validators.required],
+      nameTeacher: ['', Validators.required],
+      build: ['', Validators.required],
+      room: ['', Validators.required],
+      day: ['', Validators.required],
+      timeStart: ['', Validators.required],
+      timeEnd: ['', Validators.required],
+      faculty: ['', Validators.required],
+      credit: ['', Validators.required],
+      term: ['', Validators.required],
+      year: ['', Validators.required],
+      sit: ['', Validators.required]
+    }), this.onGetTable(), this.showSpinner(), this.addIncres.get('sit').setValue("0")
   }
-  get f() { return this.AddSubjectForm.controls; }
+  onItemSelect(item: any) {
+    // console.log(item);
+    // this.addIncres.get('nameTeacher').setValue(item)
+
+  }
+  onSelectAll(items: any) {
+    var arr = []
+    for (let item of items) {
+      arr.push(item.item_text)
+    }
+    this.addIncres.get('nameTeacher').setValue(arr)
+  }
+  get f() { return this.addIncres.controls; }
   check() {
     var check = localStorage.getItem("check")
     var getLogin = localStorage.getItem("setLogin")
@@ -42,98 +73,204 @@ export class ManageExamComponent implements OnInit {
     window.onload = function () {
     }
   }
-
+  aa = []
   onClickAdmin() {
     if (this.checkG === "เจ้าหน้าที่") {
-      this.router.navigate(["/เจ้าหน้าที่/จัดการรายวิชาสอน"])
+      this.router.navigate(["/เจ้าหน้าที่/จัดการวิชา"])
     } else {
       this.router.navigate(["/หน้าหลัก"])
     }
   }
-  getTable() {
+  getBuilding() {
+    this.http.get<any>('http://localhost:4001/getroom').subscribe(result => {
+      this.dataRoom = result.data
+      // console.log(this.dataRoom)
+      this.otShow = [{
+        number: 5,
+      },
+      {
+        number: 10
+      },
+      {
+        number: 20,
+      },
+      {
+        number: 50,
+      },
+      {
+        number: 60,
+      }]
+      this.year = [
+        { name: 2559 }, { name: 2560 }, { name: 2561 }, { name: 2562 },
 
-    this.http.get<any>('http://localhost:4001/tablesubject').subscribe(result => {
-      this.data = result.data
+      ]
+      this.term = [
+        { name: "ภาคการศึกษาต้น" }, { name: "ภาคการศึกษาปลาย" }
+      ]
+      for (let item of this.dataRoom) {
+        this.spliteBuild.push(item.build)
+      }
+      this.setDataBuild()
     })
-
   }
-
+  onClickInsertBuild() {
+    this.router.navigate(['/เจ้าหน้าที่/จัดการตึก'])
+  }
   onSubmit() {
     this.submitted = true;
-    if (this.AddSubjectForm.invalid) {
+    if (this.addIncres.invalid) {
       return;
     }
-    var obj = { id: this.AddSubjectForm.value.id, name: this.AddSubjectForm.value.nameSubject, faculty: this.AddSubjectForm.value.faculty, unit: this.AddSubjectForm.value.unit }
-    this.http.post<any>('http://localhost:4001/tablesubject', obj).subscribe((res) => {
-      // this.getTable()
-      window.location.reload()
+    var obj = {
+      id: this.addIncres.value.id, name: this.addIncres.value.nameSubject, teacher:
+        this.addIncres.value.nameTeacher, build: this.addIncres.value.build, room:
+        this.addIncres.value.room, day: this.addIncres.value.day, timeStart: this.addIncres.value.timeStart,
+      timeEnd: this.addIncres.value.timeEnd, faculty: this.addIncres.value.faculty, unit: this.addIncres.value.credit,
+      term: this.addIncres.value.term, year: this.addIncres.value.year, sit: this.addIncres.value.sit
+    }
+    this.http.post<any>('http://localhost:4001/subjectlearn', obj).subscribe(result => {
+      console.log(obj)
+      this.getSubjectLearn()
+      this.onClickClear()
+    })
+  }
+  dataTeacherAfterGet: any[]
+  // nameteacher2 = []
+  getSubjectLearn() {
+    var arr
+    this.http.get<any>('http://localhost:4001/subjectlearn').subscribe(result => {
+      this.dataSubjectLearn = result.data
+
+      // for (var i = 0; i < result.data[0].teacher.length; i++) {
+      //   arr.push({ namesss: result.data[0].teacher[i].item_text })
+      //   this.nameteacher2 = arr
+      // }
+      // console.log(this.nameteacher2)
     })
   }
 
-  onSetData(event, _id: string, i) {
-    if (event.target.checked) {
-      this.arrayDeleteCheck = event.target.value
-      this.dataDelete.push(this.arrayDeleteCheck)
-      console.log(this.dataDelete)
-    } else {
-      var array = this.dataDelete
-      var index = array.indexOf(event.target.value)
-      if (index !== -1) {
-        array.splice(index, 1)
-        this.dataDelete = array
+
+  getSubject() {
+    this.http.get<any>('http://localhost:4001/subject').subscribe(result => {
+      this.dataSubject = result.data
+    })
+  }
+  checkselect = true
+  checkIdAndSub() {
+    // if (this.addIncres.value.id) {
+    //   this.checkselect = true
+    // }
+    // this.checkselect = false
+    if (this.addIncres.value.id) {
+      for (let item of this.dataSubject) {
+        if (this.addIncres.value.id === item.id) {
+          this.addIncres.get('nameSubject').setValue(item.name)
+          this.addIncres.get('faculty').setValue(item.faculty)
+          this.addIncres.get('credit').setValue(item.unit)
+        }
+      }
+    }
+
+  }
+  checkNameSub() {
+    if (this.addIncres.value.nameSubject) {
+      for (let item of this.dataSubject) {
+        if (this.addIncres.value.nameSubject === item.name) {
+          this.addIncres.get('id').setValue(item.id)
+          this.addIncres.get('faculty').setValue(item.faculty)
+          this.addIncres.get('credit').setValue(item.unit)
+        }
       }
     }
   }
-
-  onClickDelete() {
-    var r = confirm("กดokเพื่อลบข้อมูล");
-    if (r == true) {
-      if (this.arrayDeleteCheck !== "" && this.dataDelete.length > 0) {
-        this.http.post('http://localhost:4001/tablesubject/delete', this.dataDelete).subscribe((res) => {
-
-          this.getTable()
+  setDataRoom = []
+  setDataRoomAfter = []
+  checkRoom() {
+    if (this.addIncres.value.build) {
+      for (let item of this.dataRoom) {
+        if (this.addIncres.value.build === item.build) {
+          this.setDataRoom.push(item.room)
+        }
+        const newArray = this.setDataRoom.filter((elem, i, arr) => {
+          if (arr.indexOf(elem) === i) {
+            return elem
+          }
         })
+        this.setDataRoom = newArray
+        this.setDataRoomAfter = this.setDataRoom
       }
-      if (this.arrayDeleteCheck == "" || this.dataDelete.length === 0) {
-        alert("กรุณาเลือกข้อมูลที่จะลบ")
+      if (this.setDataRoom != []) {
+        this.setDataRoom = []
       }
     }
   }
-  _id
-  id = ""
-  onClickEdit(_id: String, id: string, name: string, faculty: string, unit: string) {
-    this.AddSubjectForm.get('id').setValue(id);
-    this.AddSubjectForm.get('nameSubject').setValue(name);
-    this.AddSubjectForm.get('faculty').setValue(faculty)
-    this.AddSubjectForm.get('unit').setValue(unit)
-    this.AddSubjectForm.controls['id'].disable()
-    this._id = _id
-    this.id = id
-    // console.log(this.AddSubjectForm.value.id)
+
+  setDataBuild() {
+    var count = 1
+    const newArray = this.spliteBuild.filter((elem, i, arr) => {
+      if (arr.indexOf(elem) === i) {
+        return elem
+      }
+    })
+    this.dataSpliteBuild = newArray
   }
-  Edit() {
-    this.submitted = true;
-    if (this.AddSubjectForm.invalid) {
-      return;
-    }
-    var obj = { _id: this._id, id: this.id, name: this.AddSubjectForm.value.nameSubject, faculty: this.AddSubjectForm.value.faculty, unit: this.AddSubjectForm.value.unit }
-    console.log(this.id)
-    this.http.patch<any>('http://localhost:4001/tablesubject/', obj).subscribe((res) => {
-      console.log("EditSuccess")
-      window.location.reload()
+
+  onClickClear() {
+    this.submitted = false
+    this.addIncres.get('id').setValue('');
+    this.addIncres.get('nameSubject').setValue("");
+    this.addIncres.get('nameTeacher').setValue("");
+    this.addIncres.get('build').setValue("")
+    this.addIncres.get('room').setValue("")
+    this.addIncres.get('day').setValue("")
+    this.addIncres.get('timeStart').setValue("")
+    this.addIncres.get('timeEnd').setValue("")
+    this.addIncres.get('faculty').setValue("")
+    this.addIncres.get('credit').setValue("")
+    this.addIncres.get('term').setValue("")
+    this.addIncres.get('year').setValue("")
+  }
+
+  dropdownList = [];
+  onGetTable() {
+    var count = 1
+    var arr = []
+    this.http.get<any>("http://localhost:4001/getdata").subscribe(result => {
+      this.dataTeacher = result.data
+      for (let item of this.dataTeacher) {
+        if (item.types == "อาจารย์") {
+          arr.push({ item_id: count, item_text: item.name + " " + item.surname })
+          count++
+        }
+      }
+      this.dropdownList = arr
+      this.selectedItems = [];
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'item_id',
+        textField: 'item_text',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true
+      };
+      this.checkData = true;
+      this.showSpinner()
     })
   }
-  OnclickModel() {
-    this.AddSubjectForm.controls['id'].enable()
-    this.AddSubjectForm.get('id').setValue("");
-    this.AddSubjectForm.get('nameSubject').setValue("");
-    this.AddSubjectForm.get('faculty').setValue("")
-    this.AddSubjectForm.get('unit').setValue("")
-  }
-  // itemsPerPage = 5
-  // currentPage
+  showSpinner() {
+    if (this.checkData == false) {
+      this.spinner.show();
+    }
+    else if (this.checkData == true) {
 
-  // absoluteIndex(indexOnPage: number): number {
-  //   return this.itemsPerPage * (this.currentPage - 1) + indexOnPage;
-  // }
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+
+    }
+  }
+  
+  onClickEdit() {
+
+  }
 }
