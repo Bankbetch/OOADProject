@@ -4,12 +4,15 @@ import { HttpClient } from '@angular/common/http'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from "@angular/platform-browser";
 import { NgxSpinnerService } from 'ngx-spinner';
+import { FilterPipe } from '../setting-user/FilterPipe.component';
+import { OrderPipe } from 'ngx-order-pipe';
 @Component({
   selector: 'app-manage-exam',
   templateUrl: './manage-exam.component.html',
   styleUrls: ['./manage-exam.component.css']
 })
 export class ManageExamComponent implements OnInit {
+
   checkG = "false"
   getLogin = "false"
   searchString
@@ -18,7 +21,6 @@ export class ManageExamComponent implements OnInit {
   p
   dataOtShow = 5
   otShow = []
-  year = []
   term = []
   getRoom: any[]
   lenghtData: Number
@@ -26,7 +28,8 @@ export class ManageExamComponent implements OnInit {
   dataSpliteBuild
   dataTeacher: any[]
   checkData = false
-  constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title, private spinner: NgxSpinnerService) {
+  sortedCollection: any[];
+  constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title, private spinner: NgxSpinnerService, private orderPipe: OrderPipe) {
     this.title.setTitle("จัดการวิชา")
   }
   dataRoom: any[]
@@ -84,28 +87,10 @@ export class ManageExamComponent implements OnInit {
   getBuilding() {
     this.http.get<any>('http://localhost:4001/getroom').subscribe(result => {
       this.dataRoom = result.data
-      // console.log(this.dataRoom)
-      this.otShow = [{
-        number: 5,
-      },
-      {
-        number: 10
-      },
-      {
-        number: 20,
-      },
-      {
-        number: 50,
-      },
-      {
-        number: 60,
-      }]
-      this.year = [
-        { name: 2559 }, { name: 2560 }, { name: 2561 }, { name: 2562 },
-
-      ]
+      var year = (new Date()).getFullYear()
+      this.addIncres.get('year').setValue(year)
       this.term = [
-        { name: "ภาคการศึกษาต้น" }, { name: "ภาคการศึกษาปลาย" }
+        { name: "ภาคการศึกษาต้น" }, { name: "ภาคการศึกษาปลาย" }, { name: "ภาคฤดูร้อน" }
       ]
       for (let item of this.dataRoom) {
         this.spliteBuild.push(item.build)
@@ -116,6 +101,9 @@ export class ManageExamComponent implements OnInit {
   onClickInsertBuild() {
     this.router.navigate(['/เจ้าหน้าที่/จัดการตึก'])
   }
+  allowAlertInsert = false
+  allowAlertInsertFail = false
+
   onSubmit() {
     this.submitted = true;
     if (this.addIncres.invalid) {
@@ -130,8 +118,18 @@ export class ManageExamComponent implements OnInit {
     }
     this.http.post<any>('http://localhost:4001/subjectlearn', obj).subscribe(result => {
       console.log(obj)
-      this.getSubjectLearn()
-      this.onClickClear()
+      if (result.status == true) {
+        this.allowAlertInsert = true
+        setTimeout(() => {
+          this.allowAlertInsert = false
+        }, 5000);
+      } else {
+        this.allowAlertInsertFail = true
+        setTimeout(() => {
+          this.allowAlertInsertFail = false
+        }, 5000);
+      }
+      this.clearEdit()
     })
   }
   dataTeacherAfterGet: any[]
@@ -140,12 +138,23 @@ export class ManageExamComponent implements OnInit {
     var arr
     this.http.get<any>('http://localhost:4001/subjectlearn').subscribe(result => {
       this.dataSubjectLearn = result.data
-
-      // for (var i = 0; i < result.data[0].teacher.length; i++) {
-      //   arr.push({ namesss: result.data[0].teacher[i].item_text })
-      //   this.nameteacher2 = arr
-      // }
-      // console.log(this.nameteacher2)
+      this.sortedCollection = this.orderPipe.transform(this.dataSubjectLearn, '');
+      this.lenghtData = this.sortedCollection.length
+      this.otShow = [{
+        number: 5,
+      },
+      {
+        number: 10
+      },
+      {
+        number: 20,
+      },
+      {
+        number: 50,
+      },
+      {
+        number: this.lenghtData,
+      }]
     })
   }
 
@@ -157,10 +166,6 @@ export class ManageExamComponent implements OnInit {
   }
   checkselect = true
   checkIdAndSub() {
-    // if (this.addIncres.value.id) {
-    //   this.checkselect = true
-    // }
-    // this.checkselect = false
     if (this.addIncres.value.id) {
       for (let item of this.dataSubject) {
         if (this.addIncres.value.id === item.id) {
@@ -229,6 +234,7 @@ export class ManageExamComponent implements OnInit {
     this.addIncres.get('credit').setValue("")
     this.addIncres.get('term').setValue("")
     this.addIncres.get('year').setValue("")
+    this.getSubjectLearn()
   }
 
   dropdownList = [];
@@ -269,8 +275,88 @@ export class ManageExamComponent implements OnInit {
 
     }
   }
-  
+  allowAlertEdit = false
   onClickEdit() {
+    this.submitted = true;
+    if (this.addIncres.invalid) {
+      return;
+    }
+    var obj = {
+      id: this.addIncres.value.id, name: this.addIncres.value.nameSubject, teacher:
+        this.addIncres.value.nameTeacher, build: this.addIncres.value.build, room:
+        this.addIncres.value.room, day: this.addIncres.value.day, timeStart: this.addIncres.value.timeStart,
+      timeEnd: this.addIncres.value.timeEnd, faculty: this.addIncres.value.faculty, unit: this.addIncres.value.credit,
+      term: this.addIncres.value.term, year: this.addIncres.value.year, sit: this.addIncres.value.sit
+    }
+    this.http.patch<any>('http://localhost:4001/subjectlearn/', obj).subscribe((res) => {
+      this.allowAlertEdit = true
+      setTimeout(() => {
+        this.allowAlertEdit = false
+      }, 5000);
+      this.clearEdit()
+    })
+  }
 
+  clearEdit() {
+    this.submitted = false
+    this.addIncres.get('id').setValue('');
+    this.addIncres.get('nameSubject').setValue("");
+    this.addIncres.get('nameTeacher').setValue("");
+    this.addIncres.get('build').setValue("")
+    this.addIncres.get('room').setValue("")
+    this.addIncres.get('day').setValue("")
+    this.addIncres.get('timeStart').setValue("")
+    this.addIncres.get('timeEnd').setValue("")
+    this.addIncres.get('faculty').setValue("")
+    this.addIncres.get('credit').setValue("")
+    this.addIncres.get('term').setValue("")
+    this.addIncres.get('year').setValue("")
+  }
+
+
+  tableClick(id: string, name: string, teacher: string, day: string,
+    term: string, timeStart: string, timeEnd: string, sit: string, faculty: string, unit: string,
+    year: string, build: string, room: string) {
+    this.addIncres.get('id').setValue(id);
+    this.addIncres.get('nameSubject').setValue(name);
+    this.addIncres.get('nameTeacher').setValue(teacher);
+    this.addIncres.get('build').setValue(build)
+    this.addIncres.get('room').setValue(room)
+    this.addIncres.get('day').setValue(day)
+    this.addIncres.get('timeStart').setValue(timeStart)
+    this.addIncres.get('timeEnd').setValue(timeEnd)
+    this.addIncres.get('faculty').setValue(faculty)
+    this.addIncres.get('credit').setValue(unit)
+    this.addIncres.get('term').setValue(term)
+    this.addIncres.get('year').setValue(year)
+    // console.log(this.addIncres.value)
+  }
+
+
+  order: string
+  reverse: boolean = false;
+  setOrder(value: string) {
+    if (this.order === value) {
+      this.reverse = !this.reverse;
+    }
+    this.order = value;
+  }
+  arrayDeleteCheck = ""
+  dataDelete: Array<String> = [];
+  onSetDataDelete(event, _id: string) {
+    if (event.target.checked) {
+      this.arrayDeleteCheck = event.target.value
+      this.dataDelete.push(this.arrayDeleteCheck)
+      if (event.target.value === _id) {
+      }
+    } else {
+      var array = this.dataDelete
+      var index = array.indexOf(event.target.value)
+      if (index !== -1) {
+        array.splice(index, 1)
+        this.dataDelete = array
+      }
+    }
+    console.log(this.arrayDeleteCheck)
   }
 }

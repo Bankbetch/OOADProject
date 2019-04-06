@@ -372,6 +372,35 @@ app.get('/subjectlearn', (req, res) => {
         })
     })
 })
+
+app.patch('/subjectlearn', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        const upDate = {
+            id: req.body.id,
+            name: req.body.name,
+            teacher: req.body.teacher,
+            faculty: req.body.faculty,
+            build: req.body.build,
+            unit: req.body.unit,
+            year: req.body.year,
+            term: req.body.term,
+            room: req.body.room,
+            day: req.body.day,
+            timeStart: req.body.timeStart,
+            timeEnd: req.body.timeEnd,
+            sit: req.body.sit
+        };
+        console.log(upDate)
+        db.collection("subjectlearn").update({ id: req.body.id }, upDate, function (err, result) {
+            if (err) throw err;
+            //console.log(result)
+            res.json({ status: true })
+            client.close();
+        });
+    })
+})
+
 app.listen(port, () => {
     console.log(`App listening on ${port}`)
 })
