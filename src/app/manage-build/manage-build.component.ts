@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from "@angular/platform-browser";
-
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-manage-build',
   templateUrl: './manage-build.component.html',
@@ -18,13 +18,15 @@ export class ManageBuildComponent implements OnInit {
   manageBuild: FormGroup
   arrayDeleteCheck = ""
   dataDelete: Array<String> = [];
-p
-  constructor(private router: Router, private http: HttpClient, private formBuilder: FormBuilder, private title: Title) {
+  p
+  checkData = false
+  constructor(private router: Router, private http: HttpClient,
+    private formBuilder: FormBuilder, private title: Title, private spinner: NgxSpinnerService) {
     this.title.setTitle("จัดการตึก")
   }
   get f() { return this.manageBuild.controls; }
   ngOnInit() {
-    this.check(), this.onClickAdmin(), this.getTable(),
+    this.check(), this.onClickAdmin(), this.showSpinner(), this.getTable(),
       this.manageBuild = this.formBuilder.group({
         build: ['', Validators.required],
         room: ['', Validators.required],
@@ -40,7 +42,18 @@ p
     window.onload = function () {
     }
   }
+  showSpinner() {
+    if (this.checkData == false) {
+      this.spinner.show();
+    }
+    else if (this.checkData == true) {
 
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+
+    }
+
+  }
   onClear() {
     this.manageBuild.get('build').setValue("");
     this.manageBuild.get('room').setValue("");
@@ -57,6 +70,8 @@ p
   }
   getTable() {
     this.http.get<any>('http://localhost:4001/getroom').subscribe(result => {
+      this.checkData = true;
+      this.showSpinner()
       this.data = result.data
     })
   }

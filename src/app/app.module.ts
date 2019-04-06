@@ -16,14 +16,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ManageBuildComponent } from './manage-build/manage-build.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { OrderModule } from 'ngx-order-pipe';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 const router: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'หน้าหลัก', component: MainComponent },
   { path: 'เจ้าหน้าที่', component: AdminComponent },
   { path: 'เจ้าหน้าที่/จัดการผู้ใช้งาน', component: SettingUserComponent },
-  { path: 'เจ้าหน้าที่/จัดการรายวิชาสอน', component: ManageExamComponent },
+  { path: 'เจ้าหน้าที่/จัดการวิชา', component: ManageExamComponent },
   { path: 'เจ้าหน้าที่/จัดการรายวิชาสอน/เพิ่มรายวิชาสอน', component: AddSubjectComponent },
   { path: 'เจ้าหน้าที่/จัดการตึก', component: ManageBuildComponent },
   { path: '**', redirectTo: '/login' }
@@ -50,7 +50,8 @@ const router: Routes = [
     ReactiveFormsModule,
     NgxPaginationModule,
     NgxSpinnerModule,
-    OrderModule
+    OrderModule,
+    NgMultiSelectDropDownModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1966,3 +1966,16 @@ a {
 .w3-hover-border-pale-blue:hover {
     border-color: #e7ffff !important
 }
+.col-2-2 {
+    flex: 0 0 16%;
+    max-width: 16%;
+}
+.col-2-3 {
+    flex: 0 0 8%;
+    max-width: 8%;
+}
+
+.col-2-4 {
+    flex: 0 0 11%;
+    max-width: 11%;
+}

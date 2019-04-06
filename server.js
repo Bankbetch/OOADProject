@@ -210,10 +210,10 @@ app.post('/tablesubject/delete', (req, res) => {
     })
 })
 
-app.get('/incres', (req, res) => {
+app.get('/subject', (req, res) => {
     mongoClient.connect(url, (err, client) => {
         const db = client.db(dbName)
-        db.collection('builds').find({}).toArray(function (err, result) {
+        db.collection('tableSubject').find({}).toArray(function (err, result) {
             if (err) throw err;
             res.json({ data: result })
             client.close();
@@ -315,7 +315,7 @@ app.post('/excel', (req, res) => {
                 req.body.forEach(function (item) {
                     newa.push(item)
                 })
-               
+
                 console.log(newa)
                 db.collection('users').insertMany(newa, (err, result) => {
                     if (err) throw err
@@ -330,6 +330,48 @@ app.post('/excel', (req, res) => {
     });
 })
 
+app.post('/subjectlearn', (req, res) => {
+    mongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+        const db = client.db(dbName)
+        db.collection('subjectlearn').findOne({ id: req.body.id }, (err, result) => {
+            if (result === null) {
+                const newUser = {
+                    id: req.body.id,
+                    name: req.body.name,
+                    teacher: req.body.teacher,
+                    faculty: req.body.faculty,
+                    build: req.body.build,
+                    unit: req.body.unit,
+                    year: req.body.year,
+                    term: req.body.term,
+                    room: req.body.room,
+                    day: req.body.day,
+                    timeStart: req.body.timeStart,
+                    timeEnd: req.body.timeEnd,
+                    sit: req.body.sit
+                };
+                console.log(newUser)
+                db.collection('subjectlearn').insertOne(newUser, (err, result) => {
+                    if (err) throw err
+                    client.close()
+                    res.json({ status: true })
+                })
+            } else {
+                res.json({ status: false })
+                client.close()
+            }
+        });
+    });
+})
+app.get('/subjectlearn', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        const db = client.db(dbName)
+        db.collection('subjectlearn').find({}).toArray((err, result) => {
+            res.json({ data: result })
+            client.close();
+        })
+    })
+})
 app.listen(port, () => {
     console.log(`App listening on ${port}`)
 })
