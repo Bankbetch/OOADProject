@@ -1,0 +1,184 @@
+<div class="container">
+  <br>
+  <h1 class="text-secondary text-center">จัดการตึก</h1>
+  <div class="row">
+    <div class="col-4">
+      <input type="text" class="form-control" name="searchString" placeholder="ค้นหา" [(ngModel)]="searchString">
+    </div>
+    <div class="col offset-5">
+      <button class="btn btn-danger btn-block" (click)="onClickDelete()">ลบที่เลือก</button>
+    </div>
+    <div class="col">
+      <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+        data-dismiss="modal">เพิ่มรายวิชา</button>
+    </div>
+  </div>
+  <br>
+  <div class="table-responsive">
+    <table class="table table-hover table-info table-striped text-center table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">เลือก</th>
+          <th scope="col">ตึก</th>
+          <th scope="col">ห้อง</th>
+          <th scope="col">จำนวนเก้าอี้</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of data | filterPipe :{build:searchString,room:searchString,sit:searchString,status:searchString} | paginate: { itemsPerPage: 5, currentPage: p }; let i = index">
+          <td> <label><input type="checkbox" value="{{item._id}}" (change)="onSetData($event,item._id,i+1)"></label>
+          </td>
+          <td>{{item.build}}</td>
+          <td>{{item.room}}</td>
+          <td>{{item.sit}}</td>
+          <td>{{item.status}}</td>
+          <td>
+            <div class="row">
+              <div class="col">
+                <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal2"
+                  data-dismiss="modal">ดู</button>
+              </div>
+              <div class="col">
+                <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#exampleModal3"
+                  data-dismiss="modal"
+                  (click)="onClickEdit(item._id,item.build,item.room,item.sit,item.status)">แก้ไข</button>
+              </div>
+            </div>
+          </td>
+
+          <!-- Modal Add -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">เพิ่มข้อมูล</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+                  <form [formGroup]="manageBuild" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                      <label>ตึก</label>
+                      <input type="text" class="form-control" placeholder="Ex.Informatics" formControlName="build"
+                        [ngClass]="{ 'is-invalid': submitted && f.build.errors }" />
+                      <div *ngIf="submitted && f.build.errors" class="invalid-feedback">
+                        <div *ngIf="f.build.errors.required">Room is required</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>ห้อง </label>
+                      <input type="text" class="form-control" placeholder="Ex.if-5t-02" formControlName="room"
+                        [ngClass]="{ 'is-invalid': submitted && f.room.errors }" />
+                      <div *ngIf="submitted && f.room.errors" class="invalid-feedback">
+                        <div *ngIf="f.room.errors.required">Room is required</div>
+                      </div>
+
+                    </div>
+                    <div class="form-group">
+                      <label>จำนวนเก้าอี้ </label>
+                      <input type="text" class="form-control" placeholder="Ex.60" formControlName="sit"
+                        [ngClass]="{ 'is-invalid': submitted && f.sit.errors }" />
+                      <div *ngIf="submitted && f.sit.errors" class="invalid-feedback">
+                        <div *ngIf="f.sit.errors.required">Sit is required</div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Status </label>
+                      <input type="text" class="form-control" placeholder="Ex.ว่าง" formControlName="status"
+                        [ngClass]="{ 'is-invalid': submitted && f.status.errors }" />
+                      <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
+                        <div *ngIf="f.status.errors.required">status is required</div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success" (click)="onSubmit()">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="onClear()">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal -->
+
+           <!-- Modal Edit -->
+           <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+           aria-hidden="true">
+           <div class="modal-dialog modal-md" role="document">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLabel">เพิ่มข้อมูล</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                 </button>
+               </div>
+               <div class="modal-body">
+
+                 <form [formGroup]="manageBuild" (ngSubmit)="onSubmit()">
+                   <div class="form-group">
+                     <label>ตึก</label>
+                     <input type="text" class="form-control" placeholder="Ex.Informatics" formControlName="build"
+                       [ngClass]="{ 'is-invalid': submitted && f.build.errors }" />
+                     <div *ngIf="submitted && f.build.errors" class="invalid-feedback">
+                       <div *ngIf="f.build.errors.required">Room is required</div>
+                     </div>
+                   </div>
+                   <div class="form-group">
+                     <label>ห้อง </label>
+                     <input type="text" class="form-control" placeholder="Ex.if-5t-02" formControlName="room"
+                       [ngClass]="{ 'is-invalid': submitted && f.room.errors }" />
+                     <div *ngIf="submitted && f.room.errors" class="invalid-feedback">
+                       <div *ngIf="f.room.errors.required">Room is required</div>
+                     </div>
+
+                   </div>
+                   <div class="form-group">
+                     <label>จำนวนเก้าอี้ </label>
+                     <input type="text" class="form-control" placeholder="Ex.60" formControlName="sit"
+                       [ngClass]="{ 'is-invalid': submitted && f.sit.errors }" />
+                     <div *ngIf="submitted && f.sit.errors" class="invalid-feedback">
+                       <div *ngIf="f.sit.errors.required">Sit is required</div>
+                     </div>
+                   </div>
+
+                   <div class="form-group">
+                     <label>Status </label>
+                     <input type="text" class="form-control" placeholder="Ex.ว่าง" formControlName="status"
+                       [ngClass]="{ 'is-invalid': submitted && f.status.errors }" />
+                     <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
+                       <div *ngIf="f.status.errors.required">status is required</div>
+                     </div>
+                   </div>
+                 </form>
+               </div>
+               <div class="modal-footer">
+                 <button type="submit" class="btn btn-success" (click)="Edit()">Save changes</button>
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                   (click)="onClear()">Close</button>
+               </div>
+             </div>
+           </div>
+         </div>
+         <!-- Modal -->
+
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple">
+ <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

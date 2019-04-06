@@ -1,0 +1,10 @@
+.bg{
+  height: 100vh;
+  background-color: rgb(240, 240, 240);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.display-center {
+  margin-top: 50%;
+}

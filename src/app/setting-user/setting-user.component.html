@@ -1,0 +1,636 @@
+<div class="container w3-animate-opacity">
+  <br />
+  <h1 class="text-secondary text-center">จัดการผู้ใช้งาน</h1>
+
+  <div class="modal fade" id="modalInsert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">เพิ่มผู้ใช้</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">ชื่อ</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="firstName" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" (keypress)="isNotNumber($event)" />
+                    <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                      <div *ngIf="f.firstName.errors.required">
+                        First Name is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="surname" class="col-sm-3 col-form-label">นามสกุล</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="lastName" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" (keypress)="isNotNumber($event)" />
+                    <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                      <div *ngIf="f.lastName.errors.required">
+                        Last Name is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="username" class="col-sm-3 col-form-label">Username</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="username" class="form-control"
+                      (keypress)="isKeypressUsername($event)" maxlength="20"
+                      [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                      <div *ngIf="f.username.errors.required">Username is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="password" class="col-sm-3 col-form-label">Password</label>
+                  <div class="col-sm-9">
+                    <input type="password" formControlName="password" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">Password is required</div>
+                      <div *ngIf="f.password.errors.minlength">
+                        Password must be at least 8 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="repassword" class="col-sm-3 col-form-label">Confirm Password</label>
+                  <div class="col-sm-9">
+                    <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{
+                        'is-invalid': submitted && f.confirmPassword.errors
+                      }" />
+                    <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                      <div *ngIf="f.confirmPassword.errors.required">
+                        Confirm Password is required
+                      </div>
+                      <div *ngIf="f.confirmPassword.errors.mustMatch">
+                        Passwords must match
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="type" class="col-sm-3 col-form-label">Status</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect01" formControlName="type"
+                        [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+                        <option *ngFor="let item of types2">{{ item.name }}</option>
+                        <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+                          <div *ngIf="f.type.errors.required">type is required</div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="repassword" class="col-sm-3 col-form-label">อีเมล์</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="email" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Email is required</div>
+                      <div *ngIf="f.email.errors.email">
+                        Email must be a valid email address
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">อายุ</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="age" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.age.errors }" maxlength="3"
+                      (keypress)="notText($event)" />
+                    <div *ngIf="submitted && f.age.errors" class="invalid-feedback">
+                      <div *ngIf="f.age.errors.required">age is required</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="surname" class="col-sm-3 col-form-label">ที่อยู่</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="address" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+                    <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+                      <div *ngIf="f.address.errors.required">address is required</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="province" class="col-sm-3 col-form-label">จังหวัด</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect02" formControlName="province"
+                        [ngClass]="{ 'is-invalid': submitted && f.province.errors }" (change)="bfunc()">
+                        <option>เลือก</option>
+                        <option *ngFor="let item of cityOption; let i = index">{{
+                          item.province_name_eng
+                        }}</option>
+                        <div *ngIf="submitted && f.province.errors" class="invalid-feedback">
+                          <div *ngIf="f.province.errors.required">
+                            province is required
+                          </div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="aumpher" class="col-sm-3 col-form-label">อำเภอ</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect03" formControlName="aumpher"
+                        [ngClass]="{ 'is-invalid': submitted && f.aumpher.errors }" (change)="bfunc()">
+                        <option *ngIf="disableSelectbox">เลือก</option>
+
+                        <option *ngFor="let item of ArrayAmphures; let i = index">{{
+                          item
+                        }}</option>
+                        <div *ngIf="submitted && f.aumpher.errors" class="invalid-feedback">
+                          <div *ngIf="f.aumpher.errors.required">
+                            aumpher is required
+                          </div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="tumbon" class="col-sm-3 col-form-label">ตำบล</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect04" formControlName="tumbon"
+                        [ngClass]="{ 'is-invalid': submitted && f.tumbon.errors }" (change)="bfunc()">
+                        <option *ngIf="disableSelectbox">เลือก</option>
+
+                        <option *ngFor="let item of ArrayDistricts; let i = index">{{
+                          item
+                        }}</option>
+                        <div *ngIf="submitted && f.tumbon.errors" class="invalid-feedback">
+                          <div *ngIf="f.tumbon.errors.required">tumbon is required</div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="repassword" class="col-sm-3 col-form-label">รหัสไปรษณีย์</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="post" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.post.errors }" disabled />
+                    <div *ngIf="submitted && f.post.errors" class="invalid-feedback">
+                      <div *ngIf="f.post.errors.required">post Name is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="alert alert-success text-center" role="alert" *ngIf="allowAlertAdd">
+              เพิ่มข้อมูลเรียบร้อย
+            </div>
+            <div class="alert alert-danger text-center" role="alert" *ngIf="allowAlertDelete">
+              ลบข้อมูลเรียบร้อย
+            </div>
+            <div class="alert alert-primary text-center" role="alert" *ngIf="allowAlertEdit">
+              แก้ไขอมูลเรียบร้อย
+            </div> -->
+            <!-- <div class="row">
+              <div class="col-2 offset-4 " *ngIf="disableButtonAdd">
+                <button type="submit" class="btn btn-outline-primary btn-lg">
+                  <i class="fa fa-plus-square"></i> ยืนยัน
+                </button>
+              </div>
+              <div class="col-2 offset-4" *ngIf="disableButtonEdit">
+                <button type="button" class="btn btn-outline-warning btn-lg" (click)="onClickEdit()">
+                  <i class="fa fa-comment"></i> ยืนยัน
+                </button>
+              </div>
+              <div class="col-2 offset-4" *ngIf="disableButtonDelete">
+                <button type="button" class="btn btn-danger btn-lg" (click)="onClickDelete()">
+                  <i class="fa fa-trash"></i> Delete
+                </button>
+              </div>
+              <div class="col-3 offset-0">
+                <button type="button" class="btn btn-outline-info btn-lg" (click)="OnClear()">
+                  <i class="fa fa-times-circle"></i> Cancle
+                </button>
+              </div>
+            </div> -->
+
+            <div class="alert alert-success text-center" role="alert" *ngIf="allowAlertAdd">
+              เพิ่มข้อมูลเรียบร้อย
+            </div>
+            <div class="alert alert-primary text-center" role="alert" *ngIf="allowAlertEdit">
+              แก้ไขอมูลเรียบร้อย
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="OnClear()">ยกเลิก</button>
+              <button type="submit" class="btn btn-primary">บันทึก</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--modelEdit-->
+
+  <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">แก้ไขผู้ใช้</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="registerForm" (ngSubmit)="onClickEdit()">
+            <div class="row">
+              <div class="col">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">ชื่อ</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="firstName" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" (keypress)="isNotNumber($event)" />
+                    <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                      <div *ngIf="f.firstName.errors.required">
+                        First Name is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="surname" class="col-sm-3 col-form-label">นามสกุล</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="lastName" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" (keypress)="isNotNumber($event)" />
+                    <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                      <div *ngIf="f.lastName.errors.required">
+                        Last Name is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="username" class="col-sm-3 col-form-label">Username</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="username" class="form-control"
+                      (keypress)="isKeypressUsername($event)" maxlength="20" id="ipUsername"
+                      [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                      <div *ngIf="f.username.errors.required">Username is required</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="password" class="col-sm-3 col-form-label">Password</label>
+                  <div class="col-sm-9">
+                    <input type="password" formControlName="password" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">Password is required</div>
+                      <div *ngIf="f.password.errors.minlength">
+                        Password must be at least 8 characters
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="repassword" class="col-sm-3 col-form-label">Confirm Password</label>
+                  <div class="col-sm-9">
+                    <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{
+                        'is-invalid': submitted && f.confirmPassword.errors
+                      }" />
+                    <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                      <div *ngIf="f.confirmPassword.errors.required">
+                        Confirm Password is required
+                      </div>
+                      <div *ngIf="f.confirmPassword.errors.mustMatch">
+                        Passwords must match
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="type" class="col-sm-3 col-form-label">Status</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect01" formControlName="type"
+                        [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+                        <option *ngFor="let item of types2">{{ item.name }}</option>
+                        <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+                          <div *ngIf="f.type.errors.required">type is required</div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="repassword" class="col-sm-3 col-form-label">อีเมล์</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="email" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">Email is required</div>
+                      <div *ngIf="f.email.errors.email">
+                        Email must be a valid email address
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">อายุ</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="age" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.age.errors }" maxlength="3"
+                      (keypress)="notText($event)" />
+                    <div *ngIf="submitted && f.age.errors" class="invalid-feedback">
+                      <div *ngIf="f.age.errors.required">age is required</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="surname" class="col-sm-3 col-form-label">ที่อยู่</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="address" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+                    <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+                      <div *ngIf="f.address.errors.required">address is required</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="province" class="col-sm-3 col-form-label">จังหวัด</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect02" formControlName="province"
+                        [ngClass]="{ 'is-invalid': submitted && f.province.errors }" (change)="bfunc()">
+                        <option>เลือก</option>
+                        <option *ngFor="let item of cityOption; let i = index">{{
+                          item.province_name_eng
+                        }}</option>
+                        <div *ngIf="submitted && f.province.errors" class="invalid-feedback">
+                          <div *ngIf="f.province.errors.required">
+                            province is required
+                          </div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="aumpher" class="col-sm-3 col-form-label">อำเภอ</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect03" formControlName="aumpher"
+                        [ngClass]="{ 'is-invalid': submitted && f.aumpher.errors }" (change)="bfunc()">
+                        <option *ngIf="disableSelectbox">เลือก</option>
+
+                        <option *ngFor="let item of ArrayAmphures; let i = index">{{
+                          item
+                        }}</option>
+                        <div *ngIf="submitted && f.aumpher.errors" class="invalid-feedback">
+                          <div *ngIf="f.aumpher.errors.required">
+                            aumpher is required
+                          </div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="tumbon" class="col-sm-3 col-form-label">ตำบล</label>
+                  <div class="col-sm-9">
+                    <div class="input-group mb-0">
+                      <select class="custom-select" id="inputGroupSelect04" formControlName="tumbon"
+                        [ngClass]="{ 'is-invalid': submitted && f.tumbon.errors }" (change)="bfunc()">
+                        <option *ngIf="disableSelectbox">เลือก</option>
+
+                        <option *ngFor="let item of ArrayDistricts; let i = index">{{
+                          item
+                        }}</option>
+                        <div *ngIf="submitted && f.tumbon.errors" class="invalid-feedback">
+                          <div *ngIf="f.tumbon.errors.required">tumbon is required</div>
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="repassword" class="col-sm-3 col-form-label">รหัสไปรษณีย์</label>
+                  <div class="col-sm-9">
+                    <input type="text" formControlName="post" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.post.errors }" disabled />
+                    <div *ngIf="submitted && f.post.errors" class="invalid-feedback">
+                      <div *ngIf="f.post.errors.required">post Name is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="alert alert-success text-center" role="alert" *ngIf="allowAlertAdd">
+              เพิ่มข้อมูลเรียบร้อย
+            </div>
+            <div class="alert alert-danger text-center" role="alert" *ngIf="allowAlertDelete">
+              ลบข้อมูลเรียบร้อย
+            </div>
+            <div class="alert alert-primary text-center" role="alert" *ngIf="allowAlertEdit">
+              แก้ไขอมูลเรียบร้อย
+            </div> -->
+            <!-- <div class="row">
+              <div class="col-2 offset-4 " *ngIf="disableButtonAdd">
+                <button type="submit" class="btn btn-outline-primary btn-lg">
+                  <i class="fa fa-plus-square"></i> ยืนยัน
+                </button>
+              </div>
+              <div class="col-2 offset-4" *ngIf="disableButtonEdit">
+                <button type="button" class="btn btn-outline-warning btn-lg" (click)="onClickEdit()">
+                  <i class="fa fa-comment"></i> ยืนยัน
+                </button>
+              </div>
+              <div class="col-2 offset-4" *ngIf="disableButtonDelete">
+                <button type="button" class="btn btn-danger btn-lg" (click)="onClickDelete()">
+                  <i class="fa fa-trash"></i> Delete
+                </button>
+              </div>
+              <div class="col-3 offset-0">
+                <button type="button" class="btn btn-outline-info btn-lg" (click)="OnClear()">
+                  <i class="fa fa-times-circle"></i> Cancle
+                </button>
+              </div>
+            </div> -->
+            <div class="alert alert-primary text-center" role="alert" *ngIf="allowAlertEdit">
+              แก้ไขอมูลเรียบร้อย
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="OnClear()">ยกเลิก</button>
+              <button type="submit" class="btn btn-primary" (click)="onClickEdit">บันทึก</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!---->
+  <br />
+
+  <div class="row">
+    <div class="col-1 col-sm-1">
+      <select class="form-control form-control-sm" [(ngModel)]="dataOtShow">
+        <option *ngFor="let item of otShow">{{item.number}}</option>
+      </select>
+    </div>
+    <div class="col-8" *ngIf="disableTable">
+      <div class="input-group">
+        <input type="text" class="form-control" name="searchString" placeholder="ค้นหา." [(ngModel)]="searchString" />
+        <div class="input-group-prepend bg-white">
+          <span class="input-group-text border-left-0 rounded-right bg-white">
+            <i class="fa fa-search"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <button class="btn btn-outline-danger" (click)="onClickDelete()" *ngIf="disableButtonDelete">
+        <i class="fa fa-trash"></i>ลบที่เลือก
+      </button>
+      &nbsp;
+      <button class="btn btn-outline-success" data-toggle="modal" data-target="#modalInsert" (click)="OnclearHide()">
+        <i class="fa fa-user-plus"></i>เพิ่มผู้ใช้
+      </button>
+
+      <!-- <button class="btn btn-outline-success" data-toggle="modal" data-target="#modalInsert" (click)="showButtonAdd()"
+      *ngIf="disableButtonCreate">
+      <i class="fa fa-user-plus"></i>เพิ่มผู้ใช้
+    </button> -->
+
+    </div>
+  </div>
+  <br />
+  <div class="table-responsive" *ngIf="disableTable">
+    <table class="table table-hove table-striped text-center" id="just_a_table">
+      <thead>
+        <tr>
+          <th scope="col">เลือก</th>
+          <th scope="col" [class.active]="order === 'name'" (click)="setOrder('name')">ชื่อ
+          </th>
+
+          <th scope="col" [class.active]="order === 'surname'" (click)="setOrder('surname')">นามสกุล
+
+          </th>
+          <th scope="col" [class.active]="order === 'username'" (click)="setOrder('username')">Username</th>
+          <th scope="col" [class.active]="order === 'email'" (click)="setOrder('email')">อีเมล์</th>
+          <th scope="col" [class.active]="order === 'types'" (click)="setOrder('types')">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
+            let item of (data
+              | filterPipe
+                : {
+                    name: searchString,
+                    surname: searchString,
+                    username: searchString,
+                    types: searchString,
+                    email: searchString
+                  }
+              | paginate: { itemsPerPage: dataOtShow, currentPage: p }) | orderBy: order:reverse:'case-insensitive';
+            let i = index
+          ">
+          <td>
+            <label><input type="checkbox" value="{{ item._id }}" (change)="onSetData($event, item._id)" /></label>
+          </td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.surname }}</td>
+          <td>{{ item.username }}</td>
+          <td>{{ item.email }}</td>
+          <td>{{ item.types }}</td>
+          <td>
+            <button class="btn btn-info " data-toggle="modal" data-target="#modalInsert" (click)="
+            tableClickDisable(
+                item.name,
+                item.surname,
+                item.username,
+                item.password,
+                item.types,
+                item.age,
+                item.email,
+                item.address,
+                item.tumbon,
+                item.aumpher,
+                item.city,
+                item.post,
+                i + 1,
+                $event
+              )
+            ">
+              <i class="fa fa-eye"></i>ดู
+            </button>
+            &nbsp;
+            <button class="btn btn-warning " data-toggle="modal" data-target="#modalEdit" (click)="
+              tableClick(
+                item.name,
+                item.surname,
+                item.username,
+                item.password,
+                item.types,
+                item.age,
+                item.email,
+                item.address,
+                item.tumbon,
+                item.aumpher,
+                item.city,
+                item.post,
+                i + 1,
+                $event
+              )
+            ">
+              <i class="fa fa-edit"></i>แก้ไข
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event" class="text-center"></pagination-controls>
+  </div>
+</div>
+<!-- <input type="file" style="display: inline-block;" (change)="incomingfile($event)" placeholder="Upload file"
+  accept=".xlsx">
+<button type="button" class="btn btn-info" (click)="Upload()">Upload</button>
+
+<button type="button" class="btn btn-info" (click)="testexcel()">data</button> -->
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
